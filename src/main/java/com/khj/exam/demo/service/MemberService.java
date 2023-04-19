@@ -18,7 +18,6 @@ public class MemberService {
 	}
 
 	public ResultData<Integer> join(String loginId, String loginPw, String name, String nickname, String cellphoneNo, String email) {
-
 		// 로그인아이디 중복체크
 		Member oldMember = getMemberByLoginId(loginId);
 
