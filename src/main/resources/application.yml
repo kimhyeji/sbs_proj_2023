@@ -12,3 +12,8 @@ spring:
     password: sbs123414
 mybatis:
   type-aliases-package: com.khj.exam.demo.vo
+  
+custom:
+  logging:
+    dir: log
+    level: debug
