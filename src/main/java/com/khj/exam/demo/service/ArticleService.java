@@ -17,12 +17,12 @@ public class ArticleService {
 		this.articleRepository = articleRepository;
 	}
 	
-	public Article getArticle(int id) {
-		return articleRepository.getArticle(id);
+	public Article getForPrintArticle(int id) {
+		return articleRepository.getForPrintArticle(id);
 	}
 	
-	public List<Article> getArticles() {
-		return articleRepository.getArticles();
+	public List<Article> getForPrintArticles() {
+		return articleRepository.getForPrintArticles();
 	}
 	
 	public ResultData<Integer> writeArticle(int memberId, String title, String body) {
@@ -39,7 +39,7 @@ public class ArticleService {
 	public ResultData<Article> modifyArticle(int id, String title, String body) {
 		articleRepository.modifyArticle(id, title, body);
 		
-		Article article = getArticle(id);
+		Article article = getForPrintArticle(id);
 		
 		return ResultData.from("S-1", Ut.f("%d번 게시물이 수정되었습니다.", id), "article", article);
 	}
