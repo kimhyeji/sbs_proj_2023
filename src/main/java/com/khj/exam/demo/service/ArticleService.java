@@ -42,6 +42,9 @@ public class ArticleService {
 		
 		ResultData actorCanDelteRd = actorCanDelete(actorId, article);
 		article.setExtra__actorCanDelete(actorCanDelteRd.isSuccess());
+		
+		ResultData actorCanMoidyRd = actorCanModify(actorId, article);
+		article.setExtra__actorCanModify(actorCanMoidyRd.isSuccess());
 	}
 	
 	public ResultData actorCanDelete(int actorId, Article article) {
