@@ -105,7 +105,7 @@ public class UsrArticleController {
 	}
 	
 	@RequestMapping("/usr/article/modify")
-	public String modify(HttpServletRequest req, int id, String title, String body) {
+	public String ShowModify(HttpServletRequest req, Model model, int id, String title, String body) {
 		Rq rq = (Rq)req.getAttribute("rq");
 		
 		Article article = articleService.getForPrintArticle(rq.getLoginedMemberId(), id);
@@ -119,6 +119,8 @@ public class UsrArticleController {
 		if ( actorCanModifyRd.isFail() ) {
 			return rq.historyBackJsOnview(actorCanModifyRd.getMsg());
 		}
+		
+		model.addAttribute("article", article);
 		
 		return "usr/article/modify";
 	}
