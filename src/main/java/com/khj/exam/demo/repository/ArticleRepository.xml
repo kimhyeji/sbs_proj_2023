@@ -16,6 +16,9 @@
 		FROM article AS A
 		LEFT JOIN MEMBER AS M
 		ON A.memberId = M.id
+		<if test="boardId != 0">
+			WHERE A.boardId = #{boardId}
+		</if>
 		ORDER BY id DESC
 	</select>
 	
