@@ -18,15 +18,16 @@ import jakarta.servlet.http.HttpSession;
 @Controller
 public class UsrMemberController {
 	private MemberService memberService;
+	private Rq rq;
 	
-	public UsrMemberController(MemberService memberService) {
+	public UsrMemberController(MemberService memberService, Rq rq) {
 		this.memberService = memberService;
+		this.rq = rq;
 	}
 	
 	@RequestMapping("/usr/member/doJoin")
 	@ResponseBody
 	public ResultData<Member> doJoin(String loginId, String loginPw, String name, String nickname, String cellphoneNo, String email) {
-			
 		if ( Ut.empty(loginId) ) {
 			return ResultData.from("F-1", "loginId(을)를 입력해주세요.");
 		}
@@ -68,8 +69,6 @@ public class UsrMemberController {
 	@RequestMapping("/usr/member/doLogout")
 	@ResponseBody
 	public String doLogout(HttpServletRequest req) {
-		Rq rq = (Rq) req.getAttribute("rq");
-		
 		if ( !rq.isLogined() ) {
 			return rq.jsHistoryBack("이미 로그아웃 상태입니다.");
 		}
@@ -87,8 +86,6 @@ public class UsrMemberController {
 	@RequestMapping("/usr/member/doLogin")
 	@ResponseBody
 	public String doLogin(HttpServletRequest req, String loginId, String loginPw) {
-		Rq rq = (Rq) req.getAttribute("rq");
-		
 		if ( rq.isLogined() ) {
 			return rq.jsHistoryBack("이미 로그인되었습니다.");
 		}
