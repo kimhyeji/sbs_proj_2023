@@ -31,6 +31,14 @@
 		WHERE A.id = #{id}
 	</select>
 	
+	<select id="getArticlesCount" resultType="int">
+		SELECT COUNT(*) AS cnt
+		FROM article AS A
+		<if test="boardId != 0">
+			WHERE A.boardId = #{boardId}
+		</if>
+	</select>
+	
 	<select id="getLastInsertId" resultType="int">
 		SELECT LAST_INSERT_ID()
 	</select>
