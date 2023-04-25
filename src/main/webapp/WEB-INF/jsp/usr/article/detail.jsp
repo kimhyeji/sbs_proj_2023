@@ -28,6 +28,10 @@
             <td>${article.extra__writerName}</td>
           </tr>
           <tr>
+            <th>조회수</th>
+            <td>${article.hitCount}</td>
+          </tr>
+          <tr>
             <th>제목</th>
             <td>
               ${article.title}
@@ -54,5 +58,6 @@
 		</c:if>
 		
 	</div>
+  </div>
 </section>
 <%@include file="../common/foot.jspf" %>
