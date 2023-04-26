@@ -112,4 +112,16 @@
 		FROM article
 		WHERE id = #{id}
 	</select>
+	
+	<update id="increaseGoodReactionPoint">
+		UPDATE article
+		SET goodReactionPoint = goodReactionPoint + 1
+		WHERE id = #{id}
+	</update>
+	
+	<update id="increaseBadReactionPoint">
+		UPDATE article
+		SET badReactionPoint = badReactionPoint + 1
+		WHERE id = #{id}
+	</update>
 </mapper>
