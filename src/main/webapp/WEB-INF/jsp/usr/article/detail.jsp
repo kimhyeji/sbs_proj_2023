@@ -70,7 +70,7 @@ $(function() {
             <th>추천</th>
             <td>
             	<div class="flex items-center">
-            		<span class="text-blue-700">${article.extra__goodReactionPoint}</span>
+            		<span class="text-blue-700">${article.goodReactionPoint}</span>
             		<span>&nbsp;</span>
             		
             		<c:if test="${actorCanMakeReactionPoint}">
