@@ -67,9 +67,22 @@ $(function() {
 			</td>
           </tr>
           <tr>
-            <th>추천수</th>
+            <th>추천</th>
             <td>
-            	<span class="text-blue-700">${article.extra__goodReactionPoint}</span>
+            	<div class="flex items-center">
+            		<span class="text-blue-700">${article.extra__goodReactionPoint}</span>
+            		<span>&nbsp;</span>
+            		
+            		<c:if test="${actorCanMakeReactionPoint}">
+	            		<button class="btn btn-xs btn-outline btn-primary">
+	            			좋아요 👍
+	            		</button>
+	            		<span>&nbsp;</span>
+						<button class="btn btn-xs btn-outline btn-secondary">
+							싫어요 👎
+						</button>
+            		</c:if>
+            	</div>
 			</td>
           </tr>
           <tr>
@@ -100,13 +113,4 @@ $(function() {
 	</div>
   </div>
 </section>
-
-
-<!--
-<iframe src="http://localhost:8011/usr/article/doIncreaseHitCountRd?id=1" frameborder="0"></iframe>
-
-<script>
-location.href= "http://localhost:8011/usr/article/doIncreaseHitCountRd?id=1";
-</script>
- -->
  <%@include file="../common/foot.jspf" %>
