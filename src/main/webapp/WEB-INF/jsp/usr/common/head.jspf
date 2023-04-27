@@ -64,7 +64,7 @@
         <c:if test="${rq.isLogined()}">
         	<li>
 	          <a href="/usr/member/modify" class="h-full flex items-center px-3 hover:underline">
-	            <span>${rq.loginedMember.nickname}님</span>
+	            <span>${rq.loginedMember.nickname} 님</span>
 	          </a>
 	        </li>
         	<li>
