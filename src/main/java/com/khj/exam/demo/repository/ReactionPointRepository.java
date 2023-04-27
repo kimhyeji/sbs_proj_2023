@@ -13,7 +13,7 @@ public interface ReactionPointRepository {
 			AND RP.relId = #{relId}
 			AND RP.memberId = #{memberId}
 			""")
-	public int actorCanMakeReactionPoint(int memberId, String relTypeCode, int relId);
+	public int getSumReactionPointByMemberId(int relId, String relTypeCode, int memberId);
 
 	@Insert("""
 			INSERT INTO reactionPoint
