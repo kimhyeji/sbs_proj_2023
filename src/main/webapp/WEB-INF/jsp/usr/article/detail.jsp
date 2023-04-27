@@ -135,4 +135,44 @@ $(function() {
 	</div>
   </div>
 </section>
+
+<section class="mt-5">
+  <div class="container mx-auto px-3">
+  	<h1>댓글 작성</h1>
+	<c:if test="${rq.logined}">
+		<form class="table-box-type-1" method="POST" action="../reply/doWrite">
+		  <input type="hidden" name="relTypeCode" value="article"/>
+		  <input type="hidden" name="relId" value="${article.id}"/>
+		
+	      <table>
+	      <colgroup>
+	        <col width="200"/>
+	      </colgroup>
+	        <tbody>
+	          <tr>
+	            <th>작성자</th>
+	            <td>${rq.loginedMember.nickname}</td>
+	          </tr>
+	          <tr>
+	            <th>내용</th>
+	            <td>
+	              <textarea required="required" class="w-full textarea textarea-bordered" name="body" placeholder="내용" ></textarea>
+	            </td>
+	          </tr>
+	          <tr>
+	            <th>댓글작성</th>
+	            <td>
+	              <input type="submit" class="btn btn-primary" value="댓글작성"/>
+	            </td>
+	          </tr>
+	        </tbody>
+	      </table>
+		</form>
+	</c:if>
+	<c:if test="${rq.notLogined}">
+		<a class="btn btn-link" href="/usr/member/login">로그인</a>후 이용해주세요
+	</c:if>
+  </div>
+</section>
+
  <%@include file="../common/foot.jspf" %>

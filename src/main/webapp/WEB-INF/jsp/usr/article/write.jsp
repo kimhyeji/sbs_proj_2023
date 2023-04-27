@@ -21,19 +21,8 @@
             	<option value="1">공지</option>
             	<option value="2">자유</option>
             </select>
-            <!-- 
-            	<label>
-            		공지
-            		<input type="radio" name="boardId" value="1"/>
-            	</label>
-            	<label>
-            		자유
-            		<input type="radio" name="boardId" value="2"/>
-            	</label>
-            -->
             </td>
           </tr>
-          <tr>
           <tr>
             <th>작성자</th>
             <td>${rq.loginedMember.nickname}</td>
@@ -51,7 +40,7 @@
             </td>
           </tr>
           <tr>
-            <th>수정</th>
+            <th>작성</th>
             <td>
               <input type="submit" class="btn btn-primary" value="작성"/>
               <button type="button" class="btn btn-outline btn-primary" onclick="history.back();">뒤로가기</button>
@@ -62,4 +51,5 @@
 	</form>
   </div>
 </section>
+
 <%@include file="../common/foot.jspf" %>
