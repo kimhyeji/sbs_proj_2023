@@ -112,7 +112,7 @@
           <tr>
             <th>휴대전화번호</th>
             <td>
-            <input type="text" class="input input-bordered" name="cellPhoneNo" placeholder="휴대전화번호를 입력해주세요." value="${rq.loginedMember.cellPhoneNo}"/>
+            <input type="text" class="input input-bordered" name="cellphoneNo" placeholder="휴대전화번호를 입력해주세요." value="${rq.loginedMember.cellphoneNo}"/>
             </td>
           </tr>
 
