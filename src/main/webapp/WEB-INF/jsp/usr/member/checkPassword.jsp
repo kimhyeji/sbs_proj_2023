@@ -1,12 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<c:set var="pageTitle" value="로그인"/>
+<c:set var="pageTitle" value="비밀번호 확인"/>
 <%@include file="../common/head.jspf" %>
 
 <section class="mt-5">
   <div class="container mx-auto">
-	  <form class="table-box-type-1" method="POST" action="../member/doLogin">
+	  <form class="table-box-type-1" method="POST" action="../member/doCheckPassword">
 		  <table>
 			  <colgroup>
 			  	<col width="200"/>
@@ -15,7 +15,7 @@
 			  	<tr>
 			  		<th>로그인아이디</th>
 			  		<td>
-			  			<input type="text" class="w-96 input input-bordered w-full max-w-xs" name="loginId" placeholder="로그인아이디"/>
+			  			${rq.loginedMember.loginId}
 			  		</td>
 			  	</tr>
 			  	<tr>
@@ -25,9 +25,9 @@
 			  		</td>
 			  	</tr>
 			  	<tr>
-			  		<th>로그인</th>
+			  		<th>비밀번호 확인</th>
 			  		<td>
-			  			<input type="submit" class="btn btn-primary" value="로그인"/>
+			  			<input type="submit" class="btn btn-primary" value="비밀번호 확인"/>
 			  			<button type="button" class="btn btn-outline btn-primary" onclick="history.back();">뒤로가기</button>
 			  		</td>
 			  	</tr>
