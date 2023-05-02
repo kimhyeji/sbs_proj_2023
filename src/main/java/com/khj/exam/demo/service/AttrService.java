@@ -3,6 +3,7 @@ package com.khj.exam.demo.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.khj.exam.demo.repository.AttrRepository;
 import com.khj.exam.demo.vo.Attr;
 
 @Service
