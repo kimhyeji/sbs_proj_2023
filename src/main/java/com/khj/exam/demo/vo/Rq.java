@@ -114,4 +114,9 @@ public class Rq {
 	// 편의를 위해 BeforeActionInterceptor에서 꼭 호출해줘야 한다.
 	public void initOnBeforeActionInterceptor() {
 	}
+
+	public void printReplaceJs(String msg, String uri) {
+		resp.setContentType("text/html; charset=UTF-8");
+		print(Ut.jsReplace(msg, uri));
+	}
 }
