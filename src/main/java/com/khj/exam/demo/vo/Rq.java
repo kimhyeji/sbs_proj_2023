@@ -128,7 +128,7 @@ public class Rq {
 		return "../member/login?afterLoginUri=" + getAfterLoginUri();
 	}
 
-	private String getAfterLoginUri() {
+	public String getAfterLoginUri() {
 		String requestUri = req.getRequestURI(); 
 		
 		// 로그인 후 돌아가면 안되는 페이지 URL 들을 적으시면 됩니다.
@@ -147,7 +147,7 @@ public class Rq {
 		return "../member/doLogout?afterLogoutUri=" + getAfterLogoutUri();
 	}
 
-	private String getAfterLogoutUri() {
+	public String getAfterLogoutUri() {
 		String requestUri = req.getRequestURI(); 
 		
 //		switch (requestUri) {
@@ -156,5 +156,9 @@ public class Rq {
 //		}
 		
 		return getEncodedCurrentUri();
+	}
+	
+	public String getArticleDetailUriFromArticleList(Article article) {
+		return "../article/detail?id=" + article.getId() + "&listUri=" + getEncodedCurrentUri();
 	}
 }
