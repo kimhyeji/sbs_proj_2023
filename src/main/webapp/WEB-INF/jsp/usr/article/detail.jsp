@@ -2,6 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:set var="pageTitle" value="게시물 내용"/>
 <%@include file="../common/head.jspf" %>
+<%@include file="../../common/toastUiEditorLib.jspf" %>
 
 <script>
 const params = {}
@@ -116,7 +117,9 @@ $(function() {
           <tr>
             <th>내용</th>
             <td>
-              ${article.body}
+              <div class="toast-ui-viewer">
+              	<script type="text/x-template">${article.body}</script>
+              </div>
             </td>
           </tr>
         </tbody>
