@@ -131,6 +131,7 @@ public class Rq {
 	private String getAfterLoginUri() {
 		String requestUri = req.getRequestURI(); 
 		
+		// 로그인 후 돌아가면 안되는 페이지 URL 들을 적으시면 됩니다.
 		switch (requestUri) {
 		case "/usr/member/login":
 		case "/usr/member/join":
@@ -138,6 +139,21 @@ public class Rq {
 		case "/usr/member/findLoginPw":
 			return Ut.getUriEncoded(Ut.getStrAttr(paramMap, "afterLoginUri", ""));
 		}
+		
+		return getEncodedCurrentUri();
+	}
+	
+	public String getLogoutUri() {
+		return "../member/doLogout?afterLogoutUri=" + getAfterLogoutUri();
+	}
+
+	private String getAfterLogoutUri() {
+		String requestUri = req.getRequestURI(); 
+		
+//		switch (requestUri) {
+//		case "/usr/article/write":
+//			return "";
+//		}
 		
 		return getEncodedCurrentUri();
 	}
