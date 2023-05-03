@@ -28,11 +28,11 @@
 			return;
 		}
 		
-		form.loginPw.value = form.loginPw.value.trim();
+		form.loginPwInput.value = form.loginPwInput.value.trim();
 		
-		if ( form.loginPw.value.length == 0 ) {
+		if ( form.loginPwInput.value.length == 0 ) {
 			alert('비밀번호를 입력해주세요.');
-			form.loginPw.focus();
+			form.loginPwInput.focus();
 			return;
 		}
 		
@@ -44,7 +44,7 @@
 			return;
 		}
 		
-		if ( form.loginPw.value != form.loginPwConfirm.value ) {
+		if ( form.loginPwInput.value != form.loginPwConfirm.value ) {
 			alert('비밀번호가 일치하지 않습니다.');
 			form.loginPwConfirm.focus();
 			return;
@@ -74,11 +74,11 @@
 			return;
 		}
 		
-		form.cellPhoneNo.value = form.cellPhoneNo.value.trim();
+		form.cellphoneNo.value = form.cellphoneNo.value.trim();
 		
-		if ( form.cellPhoneNo.value.length == 0 ) {
+		if ( form.cellphoneNo.value.length == 0 ) {
 			alert('휴대전화번호 입력해주세요.');
-			form.cellPhoneNo.focus();
+			form.cellphoneNo.focus();
 			return;
 		}
 		
@@ -87,7 +87,7 @@
 		form.loginPwConfirm.value = '';
 		
 		MemberJoin__submitDone = true;
-		form.submit();		
+		form.submit();	
 	}
 	
 	function checkLoginIdDup(el) {
@@ -148,13 +148,13 @@
             </td>
           </tr>
           <tr>
-            <th>새 비밀번호</th>
+            <th>로그인비밀번호</th>
             <td>
             <input type="password" class="input input-bordered" name="loginPwInput" placeholder="비밀번호를 입력해주세요."/>
             </td>
           </tr>
           <tr>
-            <th>새 비밀번호 확인</th>
+            <th>로그인비밀번호 확인</th>
             <td>
             <input type="password" class="input input-bordered" name="loginPwConfirm" placeholder="비밀번호 확인을 입력해주세요."/>
             </td>
