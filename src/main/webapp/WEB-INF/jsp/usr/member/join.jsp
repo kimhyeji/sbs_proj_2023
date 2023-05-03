@@ -5,6 +5,7 @@
 
 <script>
 	let MemberJoin__submitDone = false;
+	let validLoginId = "";
 	function MemberJoin__submit(form) {
 		if ( MemberJoin__submitDone ) {
 			alert('처리중입니다..');
@@ -15,6 +16,12 @@
 		
 		if ( form.loginId.value.length == 0 ) {
 			alert('로그인아이디 입력해주세요.');
+			form.loginId.focus();
+			return;
+		}
+		
+		if ( form.loginId.value != validLoginId ) {
+			alert('해당 로그인아이디는 올바르지 않습니다. 다른 로그인아이디를 입력해주세요.');
 			form.loginId.focus();
 			return;
 		}
@@ -76,6 +83,34 @@
 		MemberJoin__submitDone = true;
 		form.submit();		
 	}
+	
+	function checkLoginIdDup(el) {
+		const form = $(el).closest('form').get(0);
+		
+		if ( form.loginId.value.length == 0 ) {
+			validLoginId = '';
+			return;
+		}
+		
+		if ( validLoginId == form.loginId.value ) {
+			return;
+		}
+		
+		$('.loginId-msg').html('<div class="mt-2">체크중...</div>');
+		
+		$.get('../member/getLoginIdDup', {
+			isAjax : 'Y',
+			loginId : form.loginId.value
+		}, function(data) {
+			$('.loginId-msg').html('<div class="mt-2">' + data.msg + '</div>');
+			if (data.success) {
+				validLoginId = data.data1;
+			} else {
+				validLoginId = '';
+			}
+		}, 'json');
+	}
+	
 </script>
 
 <section class="mt-5">
@@ -91,7 +126,8 @@
           <tr>
             <th>로그인아이디</th>
             <td>
-            	<input type="text" class="input input-bordered" name="loginId" placeholder="로그인아이디를 입력해주세요."/>
+            	<input type="text" class="input input-bordered" name="loginId" placeholder="로그인아이디를 입력해주세요." onkeyup="checkLoginIdDup(this);" autocomplete="off"/>
+            	<div class="loginId-msg"></div>
             </td>
           </tr>
           <tr>
@@ -121,7 +157,7 @@
           <tr>
             <th>이메일</th>
             <td>
-            <input type="text" class="input input-bordered" name="email" placeholder="이메일을 입력해주세요." value="${rq.loginedMember.email}"/>
+            <input type="email" class="input input-bordered" name="email" placeholder="이메일을 입력해주세요." value="${rq.loginedMember.email}"/>
             </td>
           </tr>
           <tr>
