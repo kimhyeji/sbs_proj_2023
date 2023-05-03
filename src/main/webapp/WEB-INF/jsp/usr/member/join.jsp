@@ -104,7 +104,16 @@
 			isAjax : 'Y',
 			loginId : form.loginId.value
 		}, function(data) {
-			$('.loginId-msg').html('<div class="mt-2">' + data.msg + '</div>');
+			var $message  = $(form.loginId).next();
+			
+			if ( data.resultCode.substr(0, 2) == "S-") {
+				$message.empty().append('<div class="mt-2 text-green-500">' + data.msg + '</div>')
+				validLoginId = data.data1;
+			} else {
+				$message.empty().append('<div class="mt-2 text-red-500">' + data.msg + '</div>')
+				validLoginId = '';
+			}
+			
 			if (data.success) {
 				validLoginId = data.data1;
 			} else {
@@ -113,7 +122,7 @@
 		}, 'json');
 	}
 	
-	const checkLoginIdDupDebounced = _.debounce(checkLoginIdDup, 1000);
+	const checkLoginIdDupDebounced = _.debounce(checkLoginIdDup, 300);
 </script>
 
 <section class="mt-5">

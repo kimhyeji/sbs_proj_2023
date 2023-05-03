@@ -346,3 +346,12 @@ ALTER TABLE `attr` ADD INDEX(`relTypeCode`, `typeCode`, `type2Code`);
 # attr에 만료 날짜 추가
 ALTER TABLE `attr` ADD COLUMN `expireDate` DATETIME NULL AFTER `value`;
 DESC attr;
+
+#로그인비밀번호 컬럼의 길이를 100로 늘림
+ALTER TABLE `member` MODIFY COLUMN loginPw VARCHAR(100) NOT NULL;
+
+# 기존 회원의 비밀번호를 암호화 해서 저장
+UPDATE `member`
+SET loginPw = SHA2(loginPw, 256);
+
+SELECT * FROM `member`;
