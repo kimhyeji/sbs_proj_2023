@@ -33,6 +33,8 @@ public class MemberService {
 		if (oldMember != null) {
 			return ResultData.from("F-8", Ut.f("해당 이름(%s)과 이메일(%s)은 이미 사용중입니다.", name, email));
 		}
+		
+		loginPw = Ut.sha256(loginPw);
 
 		memberRepository.join(loginId, loginPw, name, nickname, cellphoneNo, email);
 		int id = memberRepository.getLastInsertId();
@@ -56,8 +58,8 @@ public class MemberService {
 		return memberRepository.getMembers();
 	}
 
-	public ResultData modify(int id, String loginPw, String name, String nickname, String email,
-			String cellphoneNo) {
+	public ResultData modify(int id, String loginPw, String name, String nickname, String email, String cellphoneNo) {
+		loginPw = Ut.sha256(loginPw);
 		memberRepository.modify(id, loginPw, name, nickname, email, cellphoneNo);
 		
 		return ResultData.from("S-1", "회원정보가 수정되었습니다.");

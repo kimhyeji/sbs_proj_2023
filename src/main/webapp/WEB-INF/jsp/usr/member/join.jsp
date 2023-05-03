@@ -82,6 +82,10 @@
 			return;
 		}
 		
+		form.loginPw.value = sha256(form.loginPwInput.value);
+		form.loginPwInput.value = '';
+		form.loginPwConfirm.value = '';
+		
 		MemberJoin__submitDone = true;
 		form.submit();		
 	}
@@ -129,6 +133,7 @@
   <div class="container mx-auto px-3">
 	<form class="table-box-type-1" method="POST" action="../member/doJoin" onsubmit="MemberJoin__submit(this); return false;">
 	  <input type="hidden" name="afterJoinUri" value="${param.afterJoinUri}"/>
+	  <input type="hidden" name="loginPw"/>
 
       <table>
       <colgroup>
@@ -145,7 +150,7 @@
           <tr>
             <th>새 비밀번호</th>
             <td>
-            <input type="password" class="input input-bordered" name="loginPw" placeholder="비밀번호를 입력해주세요."/>
+            <input type="password" class="input input-bordered" name="loginPwInput" placeholder="비밀번호를 입력해주세요."/>
             </td>
           </tr>
           <tr>
