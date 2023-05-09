@@ -94,15 +94,10 @@
 		const form = $(el).closest('form').get(0);
 		
 		if ( form.loginId.value.length == 0 ) {
+			$('.loginId-msg').empty();
 			validLoginId = '';
 			return;
-		}
-		
-		if ( validLoginId == form.loginId.value ) {
-			return;
-		}
-		
-		$('.loginId-msg').html('<div class="mt-2">체크중...</div>');
+		}	
 		
 		$.get('../member/getLoginIdDup', {
 			isAjax : 'Y',
