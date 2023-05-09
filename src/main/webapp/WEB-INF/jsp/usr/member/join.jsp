@@ -118,6 +118,7 @@
 			} else {
 				validLoginId = '';
 			}
+			
 		}, 'json');
 	}
 	

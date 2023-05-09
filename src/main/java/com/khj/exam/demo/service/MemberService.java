@@ -44,7 +44,7 @@ public class MemberService {
 		return memberRepository.getMemberByLoginId(loginId);
 	}
 
-	private Member getMemberByNameAndEmail(String name, String email) {
+	public Member getMemberByNameAndEmail(String name, String email) {
 		return memberRepository.getMemberByNameAndEmail(name, email);
 	}
 

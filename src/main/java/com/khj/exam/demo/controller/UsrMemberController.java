@@ -42,7 +42,6 @@ public class UsrMemberController {
 	@RequestMapping("/usr/member/doJoin")
 	@ResponseBody
 	public String doJoin(String loginId, String loginPw, String name, String nickname, String cellphoneNo, String email, @RequestParam(defaultValue = "/") String afterLoginUri) {
-		System.out.println("loginPw : " + loginPw);
 		if ( Ut.empty(loginId) ) {
 			return rq.jsHistoryBack("F-1", "loginId(을)를 입력해주세요.");
 		}
@@ -117,13 +116,42 @@ public class UsrMemberController {
 			return rq.jsHistoryBack("존재하지 않은 로그인아이디 입니다.");
 		}
 		
-		if ( member.getLoginPw().equals(Ut.sha256(loginPw)) == false ) {
+		if ( member.getLoginPw().equals(loginPw) == false ) {
 			return rq.jsHistoryBack("비밀번호가 일치하지 않습니다.");
 		}
 		
 		rq.login(member);
 		
 		return rq.jsReplace(Ut.f("%s님 환영합니다.", member.getNickname()), afterLoginUri);
+	}
+	
+	@RequestMapping("/usr/member/findLoginId")
+	public String showFindLoginId() {
+		return "usr/member/findLoginId";
+	}
+	
+	@RequestMapping("/usr/member/doFindLoginId")
+	@ResponseBody
+	public String doFindLoginId(String name, String email, @RequestParam(defaultValue= "/") String afterFindLoginIdUri) {
+		if ( rq.isLogined() ) {
+			return rq.jsHistoryBack("이미 로그인되었습니다.");
+		}
+		
+		if ( Ut.empty(name) ) {
+			return rq.jsHistoryBack("name(을)를 입력해주세요.");
+		}
+		
+		if ( Ut.empty(email) ) {
+			return rq.jsHistoryBack("email(을)를 입력해주세요.");
+		}
+		
+		Member member = memberService.getMemberByNameAndEmail(name, email);
+		
+		if ( member == null ) {
+			return rq.jsHistoryBack("존재하지 않은 로그인아이디 입니다.");
+		}
+		
+		return rq.jsReplace(Ut.f("회원님의 아이디는 [%s]입니다.", member.getLoginId()), afterFindLoginIdUri);
 	}
 	
 	@RequestMapping("/usr/member/getMembers")
