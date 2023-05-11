@@ -15,21 +15,23 @@
 <script src=""></script>
 
 <section class="mt-5">
-		<div class="container mx-auto px-3">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Explicabo beatae
-				veniam placeat odio voluptatibus est error consequatur enim optio consectetur sunt accusantium molestiae cupiditate
-				quis repellendus facere atque ducimus velit.</div>
+	<div class="container mx-auto px-3">
+		Lorem ipsum dolor sit amet, consectetur adipisicing elit. Explicabo beatae
+		veniam placeat odio voluptatibus est error consequatur enim optio consectetur sunt accusantium molestiae cupiditate
+		quis repellendus facere atque ducimus velit.
 
 
 		<h1>Toast UI</h1>
 		<h2 id="calendarTitle"></h2>
 		<div>
-				<button type="button" class="btn btn-default js-calendar-prev">&lt;</button>
-				<button type="button" class="btn btn-default js-calendar-next">&gt;</button>
-				<button type="button" class="btn btn-default js-calendar-month-view">Month</button>
-				<button type="button" class="btn btn-default js-calendar-week-view">Week</button>
-				<button type="button" class="btn btn-default js-calendar-day-view">Day</button>
+			<button type="button" class="btn btn-default js-calendar-prev">&lt;</button>
+			<button type="button" class="btn btn-default js-calendar-next">&gt;</button>
+			<button type="button" class="btn btn-default js-calendar-month-view">Month</button>
+			<button type="button" class="btn btn-default js-calendar-week-view">Week</button>
+			<button type="button" class="btn btn-default js-calendar-day-view">Day</button>
 		</div>
 		<div id="calendar">
+	</div>
 </section>
 
 <script>
