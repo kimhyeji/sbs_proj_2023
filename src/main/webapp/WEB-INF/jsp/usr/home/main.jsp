@@ -12,7 +12,7 @@
 <script src="https://uicdn.toast.com/tui.time-picker/latest/tui-time-picker.min.js"></script>
 <script src="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.min.js"></script>
 <script src="https://uicdn.toast.com/tui-calendar/latest/tui-calendar.js"></script>
-<script src=""></script>
+<link rel="stylesheet" href="/resource/home/main.css" />
 
 <section class="mt-5">
 	<div class="container mx-auto px-3">
@@ -21,7 +21,7 @@
 		quis repellendus facere atque ducimus velit.
 
 
-		<h1>Toast UI</h1>
+		<h1 class="main-top">Toast UI</h1>
 		<h2 id="calendarTitle"></h2>
 		<div>
 			<button type="button" class="btn btn-default js-calendar-prev">&lt;</button>
