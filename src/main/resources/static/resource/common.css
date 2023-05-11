@@ -29,3 +29,7 @@ html>body, html>body .toastui-editor-contents, html>body .ProseMirror,
 .btn-text-link:hover {
 	text-decoration: underline;	
 }
+
+#calendar {
+  height: 800px;
+}
