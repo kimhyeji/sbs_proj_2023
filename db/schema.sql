@@ -355,3 +355,45 @@ UPDATE `member`
 SET loginPw = SHA2(loginPw, 256);
 
 SELECT * FROM `member`;
+
+
+# 캘린더 테이블 생성
+CREATE TABLE calendar (
+	id INT(10) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    regDate DATETIME NOT NULL,
+    updateDate DATETIME NOT NULL,
+	title VARCHAR(200) NOT NULL,
+	memo VARCHAR(500),
+	`startDate`	DATEtime NOT NULL,
+	`endDate` DATEtime NOT NULL
+);
+
+create table calendar(
+	id INT(10) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    regDate DATETIME NOT NULL,
+    updateDate DATETIME NOT NULL,
+	title VARCHAR(200) NOT NULL,
+	writer varchar(50),
+	content varchar(1000),
+	`startDate`	DATEtime NOT NULL,
+	`endDate` DATEtime NOT NULL,
+	allDay TINYINT(1) UNSIGNED,
+	textColor varchar(50),
+	backgroundColor varchar(50),
+	borderColor varchar(50)
+);
+
+INSERT INTO calendar
+set regDate = now(),
+updateDate = now(),
+title = 'test1',
+writer = 'test',
+content = 'test1',
+`startDate` = NOW(),
+`endDate` = NOW(),
+allDay = 0,
+textColor = 'yellow',
+backgroundColor = 'navy',
+borderColor = 'navy';
+
+select * from calendar;
