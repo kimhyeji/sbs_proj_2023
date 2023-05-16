@@ -1,124 +1,48 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <c:set var="pageTitle" value="메인" />
 <%@include file="../common/head.jspf"%>
 <link rel="stylesheet" href="https://uicdn.toast.com/tui-calendar/latest/tui-calendar.css" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" />
-<link rel="stylesheet" href="https://uicdn.toast.com/tui.time-picker/latest/tui-time-picker.css" />
-<link rel="stylesheet" href="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.css" />
+<link rel="stylesheet" type="text/css"	href="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.css" />
+<link rel="stylesheet" type="text/css"	href="https://uicdn.toast.com/tui.time-picker/latest/tui-time-picker.css" />
+					  
+<script	src="https://uicdn.toast.com/tui.code-snippet/latest/tui-code-snippet.js"></script>
+<script src="https://uicdn.toast.com/tui.dom/v3.0.0/tui-dom.js"></script>
+<script	src="https://uicdn.toast.com/tui.time-picker/latest/tui-time-picker.min.js"></script>
+<script	src="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.min.js"></script>
+<script	src="https://uicdn.toast.com/tui-calendar/latest/tui-calendar.js"></script>
+<script	src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js"></script>
 
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<script src="https://uicdn.toast.com/tui.code-snippet/latest/tui-code-snippet.min.js"></script>
-<script src="https://uicdn.toast.com/tui.time-picker/latest/tui-time-picker.min.js"></script>
-<script src="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.min.js"></script>
-<script src="https://uicdn.toast.com/tui-calendar/latest/tui-calendar.js"></script>
 <link rel="stylesheet" href="/resource/home/main.css" />
 
 <section class="mt-5">
 	<div class="container mx-auto px-3">
-		Lorem ipsum dolor sit amet, consectetur adipisicing elit. Explicabo beatae
-		veniam placeat odio voluptatibus est error consequatur enim optio consectetur sunt accusantium molestiae cupiditate
-		quis repellendus facere atque ducimus velit.
+		Lorem ipsum dolor sit amet, consectetur adipisicing elit. Explicabo
+		beatae veniam placeat odio voluptatibus est error consequatur enim
+		optio consectetur sunt accusantium molestiae cupiditate quis
+		repellendus facere atque ducimus velit.
 
-
-		<h1 class=" main-top">Toast UI</h1>
-		<h2 id="calendarTitle"></h2>
-		<div>
-			<button type="button" class="btn btn-default js-calendar-prev">&lt;</button>
-			<button type="button" class="btn btn-default js-calendar-next">&gt;</button>
-			<button type="button" class="btn btn-default js-calendar-today">today</button>			
-			<button type="button" class="btn btn-default js-calendar-month-view">Month</button>
-			<button type="button" class="btn btn-default js-calendar-week-view">Week</button>
-			<button type="button" class="btn btn-default js-calendar-day-view">Day</button>
+		<hr />
+		<h1>Toast Calendar</h1>
+		<span id="renderRange" class="render-range"></span>
+		<div id="menu-navi" class="btn-wrap flex">
+			<button type="button" class="btn btn-outline btn-sm" data-action="move-prev">
+				<i class="fas fa-caret-left"></i>
+			</button>
+			<button type="button" class="btn btn-outline btn-sm" data-action="move-today">Today</button>
+			<button type="button" class="btn btn-outline btn-sm" data-action="move-next">
+				<i class="fas fa-caret-right"></i>
+			</button>
+			<button type="button" class="btn btn-outline btn-sm" data-action="move-month-view">Month</button>
+			<button type="button" class="btn btn-outline btn-sm" data-action="move-week-view">Week</button>
+			<button type="button" class="btn btn-outline btn-sm" data-action="move-day-view">Day</button>
 		</div>
-		<div id="calendar">
-	</div>
+		
+		<div id="calendar"></div>
+	</div>	
 </section>
 
-<script>
-$(function () {
-  // Function declaration to support header text
-  function setCalendarTitleText() {
-    var calendarTitle = document.getElementById('calendarTitle');    
-    var viewName = calendar.getViewName();
-    var curDate = calendar.getDate();
-    if (viewName === 'day') {
-      calendarTitle.innerText = (curDate.getMonth()+1) + '/' + curDate.getDate() + '/' + curDate.getFullYear();
-    } else {
-      calendarTitle.innerText = (curDate.getMonth()+1) + '/' + curDate.getFullYear();
-    }
-  }
-  // Example schedules
-  var schedules = [
-    {
-      id: '1',
-      calendarId: 'hi',
-      title: 'Halloween',
-      category: 'allday',
-      color: '#000000',
-      bgColor:'#eb6123',
-      isAllDay: true,
-      isVisible: true,
-      isPrivate: false,
-      start: '2023-05-30T00:00:00Z',
-    },
-    {
-      id: '2',
-      calendarId: '2',
-      title: 'Event ID: 2',
-      category: 'time',
-      isAllDay: false,
-      isVisible: true,
-      isPrivate: false,
-      start: '2023-05-23T17:30:00-05:00',
-      end: '2023-05-23T19:00:00-05:00'
-    }
-  ];
-  
-  // 캘린더 불러오기
-  var calendar = new tui.Calendar('#calendar', {
-    defaultView: 'month',
-    isReadOnly: false,
-    useDetailPopup: true,
-    useCreationPopup: true,
-  });
-  
-  // 캘린더에 데이터 추가.
-  calendar.createSchedules(schedules, true);
-    
-  // next, prev, today, month, week, day 버튼 구분.
-  $('.js-calendar-next').on('click', function() {
-    calendar.next();
-    setCalendarTitleText();
-  });
-
-  $('.js-calendar-prev').on('click', function() {
-    calendar.prev();
-    setCalendarTitleText();
-  });
-
-  $('.js-calendar-today').on('click', function() {
-    calendar.today();
-    setCalendarTitleText();
-  });
-
-  $('.js-calendar-day-view').on('click', function() {
-    calendar.changeView('day', true);
-    setCalendarTitleText();
-  });
-
-  $('.js-calendar-week-view').on('click', function() {
-    calendar.changeView('week', true);
-    setCalendarTitleText();
-  });
-
-  $('.js-calendar-month-view').on('click', function() {
-    calendar.changeView('month', true);
-    setCalendarTitleText();
-  });
-  
-  setCalendarTitleText();
-});
-</script>
+<script src="/resource/home/main.js"></script>
 
 <%@include file="../common/foot.jspf"%>

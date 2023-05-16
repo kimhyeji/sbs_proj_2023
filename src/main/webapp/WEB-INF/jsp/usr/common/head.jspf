@@ -43,6 +43,11 @@
           </a>
         </li>
         <li>
+          <a href="/usr/home/calendar" class="h-full flex items-center px-3 hover:underline">
+            <span>캘린더</span>
+          </a>
+        </li>
+        <li>
           <a href="/usr/article/write" class="h-full flex items-center px-3 hover:underline">
             <span>작성</span>
           </a>
