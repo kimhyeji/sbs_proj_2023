@@ -6,6 +6,8 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 
 import com.khj.exam.demo.repository.CalendarRepository;
+import com.khj.exam.demo.utill.Ut;
+import com.khj.exam.demo.vo.ResultData;
 
 @Service
 public class CalendarService {
@@ -14,9 +16,15 @@ public class CalendarService {
 	public CalendarService(CalendarRepository calendarRepository) {
 		this.calendarRepository = calendarRepository;
 	}
-	
+
 	public List<Map<String, Object>> getCalendarList() {
 		return calendarRepository.getCalendarList();
-    }
+	}
+
+	public ResultData deleteSchedule(int id) {
+		calendarRepository.deleteReply(id);
+
+		return ResultData.from("S-1", "일정을 삭제하였습니다.");
+	}
 
 }

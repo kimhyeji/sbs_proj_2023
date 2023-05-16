@@ -21,7 +21,7 @@
 <script>
 	document.addEventListener('DOMContentLoaded', function() {
 		var calendarEl = document.getElementById('calendar');
-		$.get('../home/getCalendar', {
+		$.get('../caln/getCalendar', {
 			isAjax : 'Y',
 			dataType : "json"
 		}, function(data) {
@@ -31,31 +31,46 @@
 					center : 'title',
 					right : 'dayGridMonth,timeGridWeek,timeGridDay,listMonth'
 				},
-				navLinks : true, // can click day/week names to navigate views
-				businessHours : true, // display business hours
-				editable : true,
-				selectable : true,
-				locale: 'ko',
-				select: function (arg) { // add event
-		          var title = prompt('Event Title:');
-		          if (title) {
-		            calendar.addEvent({
-		              title: title,
-		              start: arg.start,
-		              end: arg.end,
-		              allDay: arg.allDay
-		            })
-		          }
-		          calendar.unselect();
-		        },
-		        eventClick: function (arg) { // remove event
-		          if (confirm('Are you sure you want to delete this event?')) {
-		            arg.event.remove();
-		          }
-		        },
-		        events: data
+				navLinks : true, // 날짜를 선택하면 Day 캘린더나 Week 캘린더로 링크
+				editable : true, // 수정 가능
+				selectable : true,// 달력 일자 드래그 설정가능
+				locale : 'ko', // 한국어 설정
+				nowIndicator : true, // 현재 시간 마크
+				dayMaxEvents : true, // 이벤트가 오버되면 높이 제한 (+ 몇 개식으로 표현)				
+				events : data,
+				select : function(arg) { // add event
+					var title = prompt('Event Title:');
+					if (title) {
+						calendar.addEvent({
+							title : title,
+							start : arg.start,
+							end : arg.end,
+							allDay : arg.allDay
+						})
+					}
+					calendar.unselect();
+				},
+				eventClick : function(arg) { // remove event
+					if (confirm('일정을 삭제하시겠습니까?') == false) {
+						return;
+					}
+				
+					$.post('../caln/doDeleteSchedule', {
+						id : arg.event.id
+					}, function(data) {
+						if (data.success) {
+							arg.event.remove();
+							alert(data.msg);
+						} else {
+							if (data.msg) {
+								alert(data.msg);
+							}
+						}
+
+					}, 'json');
+				}
 			});
-		        calendar.render();
+			calendar.render();
 		}, 'json');
 	});
 </script>
