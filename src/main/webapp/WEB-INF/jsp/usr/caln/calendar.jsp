@@ -4,14 +4,12 @@
 <c:set var="pageTitle" value="캘린더" />
 <%@include file="../common/head.jspf"%>
 <!-- fullcalendar 설정관련 script -->
-<link rel="stylesheet"
-	href="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.css">
-<script
-	src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.7/index.global.min.js'></script>
+<link rel="stylesheet"	href="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.css">
+<script	src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.7/index.global.min.js'></script>
 
 <!-- fullcalendar 언어 설정관련 script -->
-<script
-	src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/locales-all.js"></script>
+<script	src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/locales-all.js"></script>
+
 <link rel="stylesheet" href="/resource/caln/caln.css" />
 
 <section class="mt-5">

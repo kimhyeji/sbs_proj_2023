@@ -125,6 +125,37 @@ public class UsrMemberController {
 		return rq.jsReplace(Ut.f("%s님 환영합니다.", member.getNickname()), afterLoginUri);
 	}
 	
+	@RequestMapping("/usr/member/findLoginPw")
+	public String showFindLoginPw() {
+		return "usr/member/findLoginPw";
+	}
+	
+	@RequestMapping("/usr/member/doFindLoginPw")
+	@ResponseBody
+	public String doFindLoginPw(String loginId, String email, @RequestParam(defaultValue= "/") String afterFindLoginPwUri) {
+		if ( Ut.empty(loginId) ) {
+			return rq.jsHistoryBack("loginId(을)를 입력해주세요.");
+		}
+		
+		if ( Ut.empty(email) ) {
+			return rq.jsHistoryBack("email(을)를 입력해주세요.");
+		}
+		
+		Member member = memberService.getMemberByLoginId(loginId);
+		
+		if ( member == null ) {
+			return rq.jsHistoryBack("존재하지 않은 회원 입니다.");
+		}
+		
+		if ( member.getEmail().equals(email) == false ) {
+			return rq.jsHistoryBack("존재하지 않은 회원 입니다.");
+		}
+		
+		ResultData notifyTempLoginPwByEmailRd = memberService.notifyTempLoginPwByEmail(member);
+		
+		return rq.jsReplace(notifyTempLoginPwByEmailRd.getMsg(), afterFindLoginPwUri);
+	}
+	
 	@RequestMapping("/usr/member/findLoginId")
 	public String showFindLoginId() {
 		return "usr/member/findLoginId";

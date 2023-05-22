@@ -89,6 +89,7 @@ public class UsrArticleController {
 
 		List<Article> articles = articleService.getForPrintArticles(rq.getLoginedMemberId(), boardId,
 				searchKeywordTypeCode, searchKeyword, itemsCountInAPage, page);
+		System.out.println("안녕");
 
 		model.addAttribute("board", board);
 		model.addAttribute("boardId", boardId);

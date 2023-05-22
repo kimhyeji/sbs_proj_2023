@@ -30,7 +30,8 @@ public class UsrCalendarController {
 	}
 
 	@RequestMapping("/usr/caln/getCalendar")
-	public @ResponseBody List<Map<String, Object>> getCalendar() {
+	@ResponseBody
+	public  List<Map<String, Object>> getCalendar() {
 		List<Map<String, Object>> calList = calendarService.getCalendarList();
 
 		JSONObject jsonObj = new JSONObject();
