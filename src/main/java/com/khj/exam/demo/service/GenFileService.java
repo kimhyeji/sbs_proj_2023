@@ -187,6 +187,12 @@ public class GenFileService {
     public void changeRelId(int id, int relId) {
     	genFileRepository.changeRelId(id, relId);
     }
+    
+    public void deleteGenFiles(String relTypeCode, int relId, String typeCode, String type2Code, int fileNo) {
+		GenFile genFile = genFileRepository.getGenFile(relTypeCode, relId, typeCode, type2Code, fileNo);
+
+		deleteGenFile(genFile);
+	}
 
     public void deleteGenFiles(String relTypeCode, int relId) {
         List<GenFile> genFiles = genFileRepository.getGenFilesByRelTypeCodeAndRelId(relTypeCode, relId);

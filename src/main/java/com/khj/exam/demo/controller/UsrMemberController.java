@@ -17,6 +17,8 @@ import com.khj.exam.demo.vo.Member;
 import com.khj.exam.demo.vo.ResultData;
 import com.khj.exam.demo.vo.Rq;
 
+import jakarta.servlet.http.HttpServletRequest;
+
 @Controller
 public class UsrMemberController {
 	private MemberService memberService;
@@ -48,26 +50,6 @@ public class UsrMemberController {
 	@RequestMapping("/usr/member/doJoin")
 	@ResponseBody
 	public String doJoin(String loginId, String loginPw, String name, String nickname, String cellphoneNo, String email, @RequestParam(defaultValue = "/") String afterLoginUri, MultipartRequest multipartRequest) {
-		if ( Ut.empty(loginId) ) {
-			return rq.jsHistoryBack("F-1", "loginId(을)를 입력해주세요.");
-		}
-		
-		if ( Ut.empty(name) ) {
-			return rq.jsHistoryBack("F-3", "name(을)를 입력해주세요.");
-		}
-		
-		if ( Ut.empty(nickname) ) {
-			return rq.jsHistoryBack("F-4", "nickname(을)를 입력해주세요.");
-		}
-		
-		if ( Ut.empty(cellphoneNo) ) {
-			return rq.jsHistoryBack("F-5", "cellphoneNo(을)를 입력해주세요.");
-		}
-		
-		if ( Ut.empty(email) ) {
-			return rq.jsHistoryBack("F-6", "email(을)를 입력해주세요.");
-		}
-
 		ResultData<Integer> joinRd = memberService.join(loginId, loginPw, name, nickname, cellphoneNo, email);
 		
 		if ( joinRd.isFail() ) {
@@ -117,18 +99,6 @@ public class UsrMemberController {
 	@RequestMapping("/usr/member/doLogin")
 	@ResponseBody
 	public String doLogin(String loginId, String loginPw, @RequestParam(defaultValue= "/") String afterLoginUri) {
-		if ( rq.isLogined() ) {
-			return rq.jsHistoryBack("이미 로그인되었습니다.");
-		}
-		
-		if ( Ut.empty(loginId) ) {
-			return rq.jsHistoryBack("loginId(을)를 입력해주세요.");
-		}
-		
-		if ( Ut.empty(loginPw) ) {
-			return rq.jsHistoryBack("loginPw(을)를 입력해주세요.");
-		}
-		
 		Member member = memberService.getMemberByLoginId(loginId);
 		
 		if ( member == null ) {
@@ -151,15 +121,7 @@ public class UsrMemberController {
 	
 	@RequestMapping("/usr/member/doFindLoginPw")
 	@ResponseBody
-	public String doFindLoginPw(String loginId, String email, @RequestParam(defaultValue= "/") String afterFindLoginPwUri) {
-		if ( Ut.empty(loginId) ) {
-			return rq.jsHistoryBack("loginId(을)를 입력해주세요.");
-		}
-		
-		if ( Ut.empty(email) ) {
-			return rq.jsHistoryBack("email(을)를 입력해주세요.");
-		}
-		
+	public String doFindLoginPw(String loginId, String email, @RequestParam(defaultValue= "/") String afterFindLoginPwUri) {		
 		Member member = memberService.getMemberByLoginId(loginId);
 		
 		if ( member == null ) {
@@ -182,19 +144,7 @@ public class UsrMemberController {
 	
 	@RequestMapping("/usr/member/doFindLoginId")
 	@ResponseBody
-	public String doFindLoginId(String name, String email, @RequestParam(defaultValue= "/") String afterFindLoginIdUri) {
-		if ( rq.isLogined() ) {
-			return rq.jsHistoryBack("이미 로그인되었습니다.");
-		}
-		
-		if ( Ut.empty(name) ) {
-			return rq.jsHistoryBack("name(을)를 입력해주세요.");
-		}
-		
-		if ( Ut.empty(email) ) {
-			return rq.jsHistoryBack("email(을)를 입력해주세요.");
-		}
-		
+	public String doFindLoginId(String name, String email, @RequestParam(defaultValue= "/") String afterFindLoginIdUri) {		
 		Member member = memberService.getMemberByNameAndEmail(name, email);
 		
 		if ( member == null ) {
@@ -223,7 +173,6 @@ public class UsrMemberController {
 	@RequestMapping("/usr/member/doCheckPassword")
 	@ResponseBody
 	public String doCheckPassword(String loginPw, String replaceUri) {
-		System.out.println("loginPw : " + loginPw);
 		if ( rq.getLoginedMember().getLoginPw().equals(loginPw) == false ) {
 			return rq.jsHistoryBack("비밀번호가 일치하지 않습니다.");
 		}
@@ -254,7 +203,8 @@ public class UsrMemberController {
 	
 	@RequestMapping("/usr/member/doModify")
 	@ResponseBody
-	public String doModify(String memberModifyAuthKey, String loginPw, String name, String nickname, String email, String cellphoneNo) {
+	public String doModify(HttpServletRequest req, String memberModifyAuthKey, String loginPw, String name, String nickname, String email, String cellphoneNo, MultipartRequest multipartRequest) {
+		System.out.println("loginPw : " +  loginPw);
 		if ( Ut.empty(memberModifyAuthKey) ) {
 			return rq.historyBackJsOnview("memberModifyAuthKey가 필요합니다.");
 		}
@@ -269,24 +219,22 @@ public class UsrMemberController {
 			loginPw = null;
 		}
 		
-		if ( Ut.empty(name) ) {
-			return rq.jsHistoryBack("이름(을)를 입력해주세요.");
+		ResultData modifyRd = memberService.modify(rq.getLoginedMemberId(), loginPw, name, nickname, email,	cellphoneNo);
+		
+		if (req.getParameter("deleteFile__member__0__extra__profileImg__1") != null ) {
+			genFileService.deleteGenFiles("member", rq.getLoginedMemberId(), "extra", "profileImg", 1);
 		}
-		
-		if ( Ut.empty(nickname) ) {
-			return rq.jsHistoryBack("닉네임(을)를 입력해주세요.");
+
+		Map<String, MultipartFile> fileMap = multipartRequest.getFileMap();
+
+		for (String fileInputName : fileMap.keySet()) {
+			MultipartFile multipartFile = fileMap.get(fileInputName);
+
+			if (multipartFile.isEmpty() == false) {
+				genFileService.save(multipartFile, rq.getLoginedMemberId());
+			}
 		}
-		
-		if ( Ut.empty(email) ) {
-			return rq.jsHistoryBack("이메일(을)를 입력해주세요.");
-		}
-		
-		if ( Ut.empty(cellphoneNo) ) {
-			return rq.jsHistoryBack("휴대전화번호(을)를 입력해주세요.");
-		}
-		
-		ResultData modifyRd = memberService.modify(rq.getLoginedMemberId(), loginPw, name, nickname, email, cellphoneNo);
-		
-		return rq.jsReplace(modifyRd.getMsg(), "/");
+
+		return rq.jsReplace(modifyRd.getMsg(), "/usr/member/myPage");
 	}
 }

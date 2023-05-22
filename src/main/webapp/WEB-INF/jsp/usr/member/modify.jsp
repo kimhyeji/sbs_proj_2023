@@ -5,15 +5,21 @@
 
 <script>
 	let MemberModify__submitDone = false;
-	function MemberModify__submit(form) {
+	function MemberModify__submit(form) { 
 		if ( MemberModify__submitDone ) {
-			alert('처리중입니다..');
+			alert('처리중입니다.');
 			return;
-		}    
+		}
 		
-		form.loginPw.value = form.loginPw.value.trim();
+		form.newLoginPw.value = form.newLoginPw.value.trim();
 		
-		if ( form.loginPw.value.length > 0 ) {
+		if ( form.newLoginPw.value.length == 0 ) {
+			alert('비밀번호를 입력해주세요.');
+			form.newLoginPw.focus();
+			return;
+		}
+		
+		if ( form.newLoginPw.value.length > 0 ) {
 			form.loginPwConfirm.value = form.loginPwConfirm.value.trim();
 			
 			if ( form.loginPwConfirm.value.length == 0 ) {
@@ -22,7 +28,7 @@
 				return;
 			}
 			
-			if ( form.loginPw.value != form.loginPwConfirm.value ) {
+			if ( form.newLoginPw.value != form.loginPwConfirm.value ) {
 				alert('비밀번호확인이 일치하지 않습니다.');
 				form.loginPwConfirm.focus();
 				return;
@@ -53,24 +59,54 @@
 			return;
 		}
 		
-		form.cellPhoneNo.value = form.cellPhoneNo.value.trim();
+		form.cellphoneNo.value = form.cellphoneNo.value.trim();
 		
-		if ( form.cellPhoneNo.value.length == 0 ) {
+		if ( form.cellphoneNo.value.length == 0 ) {
 			alert('휴대전화번호 입력해주세요.');
-			form.cellPhoneNo.focus();
+			form.cellphoneNo.focus();
 			return;
 		}
 		
+		const deleteProfileImgFileInput = form["deleteFile__member__0__extra__profileImg__1"];
+		
+		if ( deleteProfileImgFileInput.checked ) {
+			form["file__member__0__extra__profileImg__1"].vlaue = '';
+		}
+		
+		const maxSizeMb = 10;
+		const maxSize = maxSizeMb * 1204 * 1204;
+		
+		const profileImgFileInput = form["file__member__0__extra__profileImg__1"];
+		
+		if( profileImgFileInput.value ) {
+			if ( profileImgFileInput.files[0].size > maxSize ) {
+				alert(maxSizeMb + "MB 이하의 파일을 업로드 해주세요.");
+				profileImgFileInput.focus();
+				
+				return;
+			}
+		}
+		
+		if ( form.newLoginPw.value.length > 0 ) {
+			form.loginPw.value = sha256(form.newLoginPw.value);
+			form.newLoginPw.value = '';
+			form.loginPwConfirm.value = '';
+		}
+		
+		alert("hi1 : " + form.loginPw.value);
+		alert("hi2 : " + form.newLoginPw.value);
+		
 		MemberModify__submitDone = true;
-		form.submit();		
+		form.submit();
 	}
 </script>
 
 <section class="mt-5">
   <div class="container mx-auto px-3">
-	<form class="table-box-type-1" method="POST" action="../member/doModify" onsubmit="MemberModify__submit(this); return false;">
+	<form class="table-box-type-1" method="POST" enctype="multipart/form-data" action="../member/doModify" onsubmit="MemberModify__submit(this); return false;">
 	  <input type="hidden" name="memberModifyAuthKey" value="${param.memberModifyAuthKey}"/>
-	
+	  <input type="hidden" name="loginPw">
+	  
       <table>
       <colgroup>
         <col width="200"/>
@@ -83,7 +119,7 @@
           <tr>
             <th>새 비밀번호</th>
             <td>
-            <input type="password" class="input input-bordered" name="loginPw" placeholder="새 비밀번호를 입력해주세요."/>
+            <input type="password" class="input input-bordered" name="newLoginPw" placeholder="새 비밀번호를 입력해주세요."/>
             </td>
           </tr>
           <tr>
@@ -116,7 +152,22 @@
             <input type="text" class="input input-bordered" name="cellphoneNo" placeholder="휴대전화번호를 입력해주세요." value="${rq.loginedMember.cellphoneNo}"/>
             </td>
           </tr>
+		  <tr>
+            <th>프로필 이미지</th>
+            <td>
+              <img class="w-40 h-40 object-cover" src="${rq.getProfileImgUri(rq.loginedMember.id)}" alt="" onerror="${rq.removeProfileImgIfNotExitOnErrorHtmlAttr}"/>
 
+              <div class="mt-2">
+                <label class="cursor-pointer inline-flex">
+                  <span class="label-text mr-2 mt-1">이미지 삭제</span>
+                  <div>
+                    <input type="checkbox" name="deleteFile__member__0__extra__profileImg__1" class="checkbox" value="Y" />
+                  </div>
+                </label>
+              </div>
+              <input accept="image/gif, image/jpeg, image/png" name="file__member__0__extra__profileImg__1" placeholder="프로필 이미지를 선택해주세요" type="file" />
+            </td>
+          </tr>
           <tr>
             <th>회원정보수정</th>
             <td>
@@ -129,4 +180,5 @@
 	</form>
   </div>
 </section>
+
 <%@include file="../common/foot.jspf" %>

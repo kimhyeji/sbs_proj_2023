@@ -8,6 +8,7 @@
 	let MemberCheckPassword__submitDone = false;
 	function MemberCheckPassword__submit(form) {
 		if ( MemberCheckPassword__submitDone ) {
+			alert('처리중입니다.');
 			return;
 		}
 		
