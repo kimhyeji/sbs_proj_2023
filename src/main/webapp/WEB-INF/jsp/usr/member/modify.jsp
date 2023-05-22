@@ -13,12 +13,6 @@
 		
 		form.newLoginPw.value = form.newLoginPw.value.trim();
 		
-		if ( form.newLoginPw.value.length == 0 ) {
-			alert('비밀번호를 입력해주세요.');
-			form.newLoginPw.focus();
-			return;
-		}
-		
 		if ( form.newLoginPw.value.length > 0 ) {
 			form.loginPwConfirm.value = form.loginPwConfirm.value.trim();
 			
@@ -92,9 +86,6 @@
 			form.newLoginPw.value = '';
 			form.loginPwConfirm.value = '';
 		}
-		
-		alert("hi1 : " + form.loginPw.value);
-		alert("hi2 : " + form.newLoginPw.value);
 		
 		MemberModify__submitDone = true;
 		form.submit();

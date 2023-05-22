@@ -112,6 +112,33 @@ insert  into `calendar`(`id`,`regDate`,`updateDate`,`title`,`writer`,`content`,`
 (2,'2023-05-16 20:25:51','2023-05-16 20:25:51','test3','test','test1','2023-05-17 20:25:51','2023-05-18 20:25:51',0,'yellow','navy','navy'),
 (3,'2023-05-16 20:25:51','2023-05-16 20:25:51','test2','test','test1','2023-05-24 20:25:51','2023-05-31 20:25:51',0,'yellow','navy','navy');
 
+/*Table structure for table `genFile` */
+
+DROP TABLE IF EXISTS `genFile`;
+
+CREATE TABLE `genFile` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `regDate` datetime DEFAULT NULL,
+  `updateDate` datetime DEFAULT NULL,
+  `delDate` datetime DEFAULT NULL,
+  `delStatus` tinyint(1) unsigned NOT NULL DEFAULT 0,
+  `relTypeCode` char(50) NOT NULL,
+  `relId` int(10) unsigned NOT NULL,
+  `originFileName` varchar(100) NOT NULL,
+  `fileExt` char(10) NOT NULL,
+  `typeCode` char(20) NOT NULL,
+  `type2Code` char(20) NOT NULL,
+  `fileSize` int(10) unsigned NOT NULL,
+  `fileExtTypeCode` char(10) NOT NULL,
+  `fileExtType2Code` char(10) NOT NULL,
+  `fileNo` smallint(2) unsigned NOT NULL,
+  `fileDir` char(20) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `relId` (`relTypeCode`,`relId`,`typeCode`,`type2Code`,`fileNo`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+/*Data for the table `genFile` */
+
 /*Table structure for table `member` */
 
 DROP TABLE IF EXISTS `member`;

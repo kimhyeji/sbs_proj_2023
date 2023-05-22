@@ -1,25 +1,42 @@
+/* 폰트 */
 @font-face {
-    font-family: 'GmarketSansMedium';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
+	font-family: 'GmarketSansMedium';
+	src:
+		url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff')
+		format('woff');
+	font-weight: normal;
+	font-style: normal;
+}
+
+html>body {
+	font-family: 'GmarketSansMedium';
+	transition: all .5s;
 }
 
 html>body, html>body .toastui-editor-contents, html>body .ProseMirror,
-	html>body .toastui-editor-md-code, html>body .toastui-editor-md-code-block
-	{
-	font-family: 'GmarketSansMedium';
-	text-underline-position: under;
-}
+  html>body .toastui-editor-md-code, html>body .toastui-editor-md-code-block {
+  	font-family: 'GmarketSansMedium';
+  	text-underline-position: under;
+  }
 
 /* 라이브러리 */
 .table-box-type-1 > table {
 	width: 100%;
 }
 
-.table-box-type-1 > table th, .table-box-type-1>table td {
+.table-box-type-1 > table th, .table-box-type-1 > table td {
 	border: 1px solid black;
 	padding: 10px;
+}
+
+html[data-theme="dark"] .table-box-type-1 > table th, .table-box-type-1 > table td {
+	border-color: #A6ADBA;
+}
+
+.toast-ui-viewer, .toast-ui-editor {
+	background-color: white;
+	padding: 10px;
+	border-radius: 5px;
 }
 
 .btn-text-link {
@@ -27,7 +44,29 @@ html>body, html>body .toastui-editor-contents, html>body .ProseMirror,
 }
 
 .btn-text-link:hover {
-	text-decoration: underline;	
+	text-decoration: underline;
+}
+
+/* 커스텀 */
+body {
+	min-width: 800px;
+	transition: background-color 3s;
+}
+
+.btn-theme-toggle > span:first-child {
+	display: none;
+}
+
+html[data-theme="dark"] .btn-theme-toggle > span:first-child {
+	display: inline;
+}
+
+html[data-theme="dark"] .btn-theme-toggle > span:last-child {
+	display: none;
+}
+
+:root, [data-theme] {
+	transition: all .5s;
 }
 
 #calendar {
