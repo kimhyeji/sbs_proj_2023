@@ -176,6 +176,37 @@ $(function() {
 		ReplyWrite__submitFormDone = true;
 		form.submit();		
 	}
+	
+	// 댓글 삭제 관련
+	function ReplyLIst_deleteReply(btn) {
+		const $clicked = $(btn);
+		const $target = $clicked.closest('[data-id]');
+		const id = $target.attr('data-id');
+		
+		$clicked.text('삭제중...');
+		
+		$.post(
+			'../reply/doDeleteAjax',
+			{
+				id: id
+			},
+			function(data) {
+				
+				if ( data.success ) {
+					$target.remove();
+				}
+				else {
+					if (data.msg) {
+						alert(data.msg);
+					}
+					
+					$clicked.text('삭제실패ㅜㅜ');
+				}
+				
+			},
+			'json'
+		);
+	}
 </script>
 
 <section class="mt-5">
@@ -245,7 +276,7 @@ $(function() {
         </thead>
         <tbody>
           <c:forEach var="reply" items="${replies}">
-            <tr class="hover">
+             <tr data-id="${reply.id}" class="align-top">
               <th>${reply.id}</th>
               <td>${reply.forPrintintType1RegDate()}</td>
               <td>${reply.forPrintintType1UpdateDate()}</td>
@@ -256,8 +287,7 @@ $(function() {
 					<a class="btn btn-link" href="../reply/modify?id=${reply.id}&replaceUri=${rq.encodedCurrentUri}">수정</a>
 				</c:if>
 				<c:if test="${reply.extra__actorCanDelete}">
-					<a class="btn btn-link" onclick="if( confirm('정말 삭제하시겠습니까?') == false )return false;"
-					href="../reply/doDelete?id=${reply.id}&replaceUri=${rq.encodedCurrentUri}">삭제</a>
+					<a class="btn btn-link" onclick="if ( confirm('정말 삭제하시겠습니까?') ) { ReplyLIst_deleteReply(this); } return false;">삭제</a>
 				</c:if>
               </td>
               <td>${reply.forPrintBody}</td>

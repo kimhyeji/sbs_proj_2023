@@ -32,14 +32,15 @@ CREATE TABLE `article` (
   `goodReactionPoint` int(10) unsigned NOT NULL DEFAULT 0,
   `badReactionPoint` int(10) unsigned NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `article` */
 
 insert  into `article`(`id`,`regDate`,`updateDate`,`memberId`,`boardId`,`title`,`body`,`hitCount`,`goodReactionPoint`,`badReactionPoint`) values 
 (1,'2023-05-12 18:14:26','2023-05-12 18:14:26',2,1,'제목1','내용1',0,1,2),
 (2,'2023-05-12 18:14:26','2023-05-12 18:14:26',2,1,'제목2','내용2',1,2,0),
-(3,'2023-05-12 18:14:26','2023-05-12 18:14:26',2,2,'제목3','내용3',0,0,0);
+(3,'2023-05-12 18:14:26','2023-05-12 18:14:26',2,2,'제목3','내용3',0,0,0),
+(4,'2023-05-23 03:56:00','2023-05-23 03:56:55',1,1,'sdf','asdasdasd',0,0,0);
 
 /*Table structure for table `attr` */
 
@@ -58,9 +59,12 @@ CREATE TABLE `attr` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `relTypeCode` (`relTypeCode`,`relId`,`typeCode`,`type2Code`),
   KEY `relTypeCode_2` (`relTypeCode`,`typeCode`,`type2Code`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `attr` */
+
+insert  into `attr`(`id`,`regDate`,`updateDate`,`relTypeCode`,`relId`,`typeCode`,`type2Code`,`value`,`expireDate`) values 
+(1,'2023-05-23 03:57:23','2023-05-23 03:57:23','member',1,'extra','memberModifyAuthKey','3u4tanuujn','2023-05-23 04:02:23');
 
 /*Table structure for table `board` */
 
@@ -135,9 +139,12 @@ CREATE TABLE `genFile` (
   `fileDir` char(20) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `relId` (`relTypeCode`,`relId`,`typeCode`,`type2Code`,`fileNo`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `genFile` */
+
+insert  into `genFile`(`id`,`regDate`,`updateDate`,`delDate`,`delStatus`,`relTypeCode`,`relId`,`originFileName`,`fileExt`,`typeCode`,`type2Code`,`fileSize`,`fileExtTypeCode`,`fileExtType2Code`,`fileNo`,`fileDir`) values 
+(1,'2023-05-23 03:57:33','2023-05-23 03:57:33',NULL,0,'member',1,'ham2.jpg','jpg','extra','profileImg',187279,'img','jpg',1,'2023_05');
 
 /*Table structure for table `member` */
 
@@ -162,7 +169,7 @@ CREATE TABLE `member` (
 /*Data for the table `member` */
 
 insert  into `member`(`id`,`regDate`,`updateDate`,`loginId`,`authLevel`,`loginPw`,`name`,`nickname`,`cellphoneNo`,`email`,`delStatus`,`delDate`) values 
-(1,'2023-05-12 18:14:26','2023-05-12 18:14:26','admin',7,'8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918','관리자','관리자','01011111111','admin@gmail.com',0,NULL),
+(1,'2023-05-12 18:14:26','2023-05-23 03:57:33','admin',7,'8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918','관리자','관리자','01011111111','admin@gmail.com',0,NULL),
 (2,'2023-05-12 18:14:26','2023-05-12 18:14:26','user1',3,'0a041b9462caa4a31bac3567e0b6e6fd9100787db2ab433d96f6d178cabfce90','사용자1','사용자1','01011111111','user1@gmail.com',0,NULL),
 (3,'2023-05-12 18:14:26','2023-05-12 18:14:26','user2',3,'6025d18fe48abd45168528f18a82e265dd98d421a7084aa09f61b341703901a3','사용자2','사용자2','01011111111','user2@gmail.com',0,NULL);
 

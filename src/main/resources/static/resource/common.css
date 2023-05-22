@@ -10,7 +10,6 @@
 
 html>body {
 	font-family: 'GmarketSansMedium';
-	transition: all .5s;
 }
 
 html>body, html>body .toastui-editor-contents, html>body .ProseMirror,
