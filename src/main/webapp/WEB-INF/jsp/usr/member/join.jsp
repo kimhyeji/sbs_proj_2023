@@ -86,6 +86,20 @@
 		form.loginPwInput.value = '';
 		form.loginPwConfirm.value = '';
 		
+		const maxSizeMb = 0;
+		const maxSize = maxSizeMb * 1204 * 1204;
+		
+		const profileImgFileInput = form["file__member__0__extra__profileImg__1"];
+		
+		if( profileImgFileInput.value ) {
+			if ( profileImgFileInput.files[0].size > maxSize ) {
+				alert(maxSizeMb + "MB 이하의 파일을 업로드 해주세요.");
+				profileImgFileInput.focus();
+				
+				return;
+			}
+		}
+		
 		MemberJoin__submitDone = true;
 		form.submit();	
 	}
