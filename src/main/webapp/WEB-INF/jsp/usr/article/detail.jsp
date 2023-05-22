@@ -60,7 +60,10 @@ $(function() {
           </tr>
           <tr>
             <th>작성자</th>
-            <td>${article.extra__writerName}</td>
+            <td>
+              <img class="w-40 h-40 object-cover" src="${rq.getProfileImgUri(article.memberId)}" onerror="${rq.profileFallbackImgOnErrorHtml}" alt="" />
+              <span>${article.extra__writerName}</span>
+            </td>
           </tr>
           <tr>
             <th>조회수</th>
