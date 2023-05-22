@@ -127,7 +127,7 @@
 
 <section class="mt-5">
   <div class="container mx-auto px-3">
-	<form class="table-box-type-1" method="POST" action="../member/doJoin" onsubmit="MemberJoin__submit(this); return false;">
+	<form class="table-box-type-1" method="POST" enctype="multipart/form-data" action="../member/doJoin" onsubmit="MemberJoin__submit(this); return false;">
 	  <input type="hidden" name="afterJoinUri" value="${param.afterJoinUri}"/>
 	  <input type="hidden" name="loginPw"/>
 
@@ -136,6 +136,12 @@
         <col width="200"/>
       </colgroup>
         <tbody>
+          <tr>
+			<th>프로필 이미지</th>
+            <td>
+              <input name="file__member__0__extra__profileImg__1" placeholder="프로필 이미지를 선택해주세요" type="file" />
+            </td>
+          </tr>
           <tr>
             <th>로그인아이디</th>
             <td>

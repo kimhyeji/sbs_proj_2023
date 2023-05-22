@@ -1,22 +1,29 @@
 package com.khj.exam.demo.vo;
 
-import lombok.Getter;
-import lombok.ToString;
+import java.util.Map;
 
-@ToString
+import com.khj.exam.demo.utill.Ut;
+
+import lombok.Data;
+
+@Data
 public class ResultData<DT> {
-	@Getter
 	private String resultCode;
-	@Getter
 	private String msg;
-	@Getter
 	private String data1Name;
-	@Getter
 	private DT data1;
-	@Getter
 	private String data2Name;
-	@Getter
 	private Object data2;
+	private Map<String, Object> body;
+	
+	public ResultData() {
+	}
+	
+	public ResultData(String resultCode, String msg, Object... args) {
+		this.resultCode = resultCode;
+		this.msg = msg;
+		this.body = Ut.mapOf(args);
+	}
 		
 	public static ResultData from(String resultCode, String msg) {
 		return from(resultCode, msg, null, null);
