@@ -58,16 +58,16 @@ public class UsrCalendarController {
 		return jsonArr;
 	}
 
-	@RequestMapping("/usr/caln/doDeleteSchedule")
+	@RequestMapping("/usr/caln/doDeleteEvent")
 	@ResponseBody
-	public ResultData doDeleteSchedule(int id) {
+	public ResultData doDeleteEvent(int id) {
 		if (Ut.empty(id)) {
 			return ResultData.from("F-1", "id(을)를 입력해주세요.");
 		}
 
-		ResultData deleteScheduleRd = calendarService.deleteSchedule(id);
+		ResultData deleteEventRd = calendarService.deleteEvent(id);
 
-		return ResultData.from("S-1", deleteScheduleRd.getMsg());
+		return ResultData.from("S-1", deleteEventRd.getMsg());
 	}
 
 }

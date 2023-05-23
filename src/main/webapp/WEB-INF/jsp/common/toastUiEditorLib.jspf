@@ -289,7 +289,8 @@ function ToastEditor__init() {
 
     const editor = new toastui.Editor({
       el: node,
-      previewStyle: 'vertical',
+      initialEditType: 'wysiwyg',
+      previewStyle: 'tab',
       initialValue: initialValue,
       height:'600px',
       plugins: [

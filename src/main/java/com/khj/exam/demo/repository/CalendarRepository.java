@@ -19,5 +19,5 @@ public interface CalendarRepository {
 			DELETE FROM calendar
 			WHERE id = #{id}
 			""")
-	public void deleteReply(int id);
+	public void deleteEvent(int id);
 }

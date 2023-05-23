@@ -21,8 +21,8 @@ public class CalendarService {
 		return calendarRepository.getCalendarList();
 	}
 
-	public ResultData deleteSchedule(int id) {
-		calendarRepository.deleteReply(id);
+	public ResultData deleteEvent(int id) {
+		calendarRepository.deleteEvent(id);
 
 		return ResultData.from("S-1", "일정을 삭제하였습니다.");
 	}
