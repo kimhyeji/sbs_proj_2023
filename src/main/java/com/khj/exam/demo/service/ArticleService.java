@@ -12,9 +12,11 @@ import com.khj.exam.demo.vo.ResultData;
 @Service
 public class ArticleService {
 	private ArticleRepository articleRepository;
+	private GenFileService genFileService;
 	
-	public ArticleService(ArticleRepository articleRepository) {
+	public ArticleService(ArticleRepository articleRepository, GenFileService genFileService) {
 		this.articleRepository = articleRepository;
+		this.genFileService = genFileService;
 	}
 	
 	public Article getForPrintArticle(int actorId, int id) {
@@ -74,9 +76,11 @@ public class ArticleService {
 		return ResultData.from("S-1", "게시물 삭제가 가능합니다.");
 	}
 	
-	public ResultData<Integer> writeArticle(int memberId, int boardId, String title, String body) {
+	public ResultData<Integer> writeArticle(int memberId, int boardId, String title, String body, String genFileIdsStr) {
 		articleRepository.writeArticle(memberId, boardId, title, body);
 		int id = articleRepository.getLastInsertId();
+				
+		genFileService.changeInputFileRelIds(genFileIdsStr, id);
 		
 		return ResultData.from("S-1", Ut.f("%d번 게시물이 생성되었습니다.", id), "id", id);
 	}

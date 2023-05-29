@@ -1,20 +1,32 @@
 package com.khj.exam.demo.controller;
 
+import java.io.File;
+import java.io.IOException;
+import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartRequest;
 
 import com.khj.exam.demo.service.ArticleService;
 import com.khj.exam.demo.service.BoardService;
+import com.khj.exam.demo.service.GenFileService;
 import com.khj.exam.demo.service.ReactionPointService;
 import com.khj.exam.demo.service.ReplyService;
 import com.khj.exam.demo.utill.Ut;
 import com.khj.exam.demo.vo.Article;
 import com.khj.exam.demo.vo.Board;
+import com.khj.exam.demo.vo.GenFile;
 import com.khj.exam.demo.vo.Reply;
 import com.khj.exam.demo.vo.ResultData;
 import com.khj.exam.demo.vo.Rq;
@@ -27,21 +39,74 @@ public class UsrArticleController {
 	private BoardService boardService;
 	private ReactionPointService reactionPointService;
 	private ReplyService replyService;
+	private GenFileService genFileService;
 	private Rq rq;
+	private Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	public UsrArticleController(ArticleService articleService, BoardService boardService,
-			ReactionPointService reactionPointService, ReplyService replyService, Rq rq) {
+			ReactionPointService reactionPointService, ReplyService replyService, GenFileService genFileService, Rq rq) {
 		this.articleService = articleService;
 		this.boardService = boardService;
 		this.reactionPointService = reactionPointService;
 		this.replyService = replyService;
+		this.genFileService = genFileService;
 		this.rq = rq;
+	}	
+	
+	@ResponseBody
+	@RequestMapping(value = "/usr/article/image_upload", method = RequestMethod.POST)
+	public String imageUpload(@RequestParam("image")MultipartFile multipartFile,
+							  @RequestParam String uri, HttpServletRequest request, MultipartRequest multipartRequest) {
+
+		if(multipartFile.isEmpty()) {
+			logger.warn("user_write image upload detected, but there's no file.");
+			return "not found";
+		}
+
+		String directory = request.getSession().getServletContext().getRealPath("resources/upload/talk/");
+
+		String fileName = multipartFile.getOriginalFilename();
+		int lastIndex = fileName.lastIndexOf(".");
+		String ext = fileName.substring(lastIndex, fileName.length());
+		String newFileName = LocalDate.now() + "_" + System.currentTimeMillis() + ext;
+
+		try {
+			File image = new File(directory + newFileName);
+
+			multipartFile.transferTo(image);
+
+		} catch (IllegalStateException | IOException e) {
+			e.printStackTrace();
+		} finally {
+			logger.info("uri : {}", uri);
+			logger.info("Image Path : {}", directory);
+			logger.info("File_name : {}", newFileName);
+		}
+
+		// 주소값 알아내기
+		String path = request.getContextPath();
+		int index = request.getRequestURL().indexOf(path);
+		String url = request.getRequestURL().substring(0, index);
+
+		// https://localhost:8080/bombom/resources/upload/파일이름
+		
+		Map<String, MultipartFile> fileMap = multipartRequest.getFileMap();
+
+		for (String fileInputName : fileMap.keySet()) {
+            multipartFile = fileMap.get(fileInputName);
+
+            if ( multipartFile.isEmpty() == false ) {
+                genFileService.save(multipartFile, rq.getLoginedMemberId());
+            }
+        }
+
+		return url + request.getContextPath() + "/resources/upload/talk/" + newFileName;
 	}
 
 	// 액션 메서드 시작
 	@RequestMapping("/usr/article/doWrite")
 	@ResponseBody
-	public String doWrite(@RequestParam(defaultValue = "1") int boardId, String title, String body, String replaceUri) {
+	public String doWrite(@RequestParam String genFileIdsStr, @RequestParam(defaultValue = "1") int boardId, String title, String body, String replaceUri) {
 		
 //		Integer boardId로 한 다음 아래 주석을 풀어주시면 됩니다.
 //		if (Ut.empty(boardId)) {
@@ -56,7 +121,7 @@ public class UsrArticleController {
 			return rq.jsHistoryBack("body(을)를 입력해주세요.");
 		}
 
-		ResultData<Integer> writeArticleRd = articleService.writeArticle(rq.getLoginedMemberId(), boardId, title, body);
+		ResultData<Integer> writeArticleRd = articleService.writeArticle(rq.getLoginedMemberId(), boardId, title, body, genFileIdsStr);
 
 		int id = writeArticleRd.getData1();
 
@@ -89,7 +154,6 @@ public class UsrArticleController {
 
 		List<Article> articles = articleService.getForPrintArticles(rq.getLoginedMemberId(), boardId,
 				searchKeywordTypeCode, searchKeyword, itemsCountInAPage, page);
-		System.out.println("안녕");
 
 		model.addAttribute("board", board);
 		model.addAttribute("boardId", boardId);
@@ -124,6 +188,17 @@ public class UsrArticleController {
 				model.addAttribute("actorCanCancelBadReaction", true);
 			}
 		}
+		
+
+		List<GenFile> files   = genFileService.getGenFiles("article", article.getId(), "common", "attachment");
+
+		Map<String, GenFile> filesMap = new HashMap<>();
+
+		for (GenFile file : files) {
+			filesMap.put(file.getFileNo() + "", file);
+		}
+
+		article.getExtraNotNull().put("file__common__attachment", filesMap);
 
 		return "usr/article/detail";
 	}
@@ -188,7 +263,16 @@ public class UsrArticleController {
 		if (actorCanModifyRd.isFail()) {
 			return rq.historyBackJsOnview(actorCanModifyRd.getMsg());
 		}
+		
+		List<GenFile> files = genFileService.getGenFiles("article", article.getId(), "common", "attachment");
 
+		Map<String, GenFile> filesMap = new HashMap<>();
+
+		for (GenFile file : files) {
+			filesMap.put(file.getFileNo() + "", file);
+		}
+
+		article.getExtraNotNull().put("file__common__attachment", filesMap);
 		model.addAttribute("article", article);
 
 		return "usr/article/modify";

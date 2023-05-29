@@ -30,62 +30,57 @@ import jakarta.servlet.http.HttpServletRequest;
 
 @Controller
 public class CommonGenFileController {
-    @Value("${custom.genFileDirPath}")
-    private String genFileDirPath;
+	@Value("${custom.genFileDirPath}")
+	private String genFileDirPath;
 
-    @Autowired
-    private GenFileService genFileService;
+	@Autowired
+	private GenFileService genFileService;
 
-    @RequestMapping("/common/genFile/doUpload")
-    @ResponseBody
-    public ResultData doUpload(@RequestParam Map<String, Object> param, MultipartRequest multipartRequest) {
-        return genFileService.saveFiles(param, multipartRequest);
-    }
+	@RequestMapping("/common/genFile/doUpload")
+	@ResponseBody
+	public ResultData doUpload(@RequestParam Map<String, Object> param, MultipartRequest multipartRequest) {
+		return genFileService.saveFiles(param, multipartRequest);
+	}
 
-    @GetMapping("/common/genFile/doDownload")
-    public ResponseEntity<Resource> downloadFile(int id, HttpServletRequest request) throws IOException {
-        GenFile genFile = genFileService.getGenFile(id);
+	@GetMapping("/common/genFile/doDownload")
+	public ResponseEntity<Resource> downloadFile(int id, HttpServletRequest request) throws IOException {
+		GenFile genFile = genFileService.getGenFile(id);
+		String filePath = genFile.getFilePath(genFileDirPath);
 
-        if (genFile == null) {
-            throw new GenFileNotFoundException();
-        }
+		Resource resource = new InputStreamResource(new FileInputStream(filePath));
 
-        String filePath = genFile.getFilePath(genFileDirPath);
+		// Try to determine file's content type
+		String contentType = request.getServletContext().getMimeType(new File(filePath).getAbsolutePath());
 
-        Resource resource = new InputStreamResource(new FileInputStream(filePath));
+		if (contentType == null) {
+			contentType = "application/octet-stream";
+		}
 
-        // Try to determine file's content type
-        String contentType = request.getServletContext().getMimeType(new File(filePath).getAbsolutePath());
+		return ResponseEntity.ok()
+				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + genFile.getOriginFileName() + "\"")
+				.contentType(MediaType.parseMediaType(contentType)).body(resource);
+	}
 
-        if (contentType == null) {
-            contentType = "application/octet-stream";
-        }
+	@GetMapping("/common/genFile/file/{relTypeCode}/{relId}/{typeCode}/{type2Code}/{fileNo}")
+	public ResponseEntity<Resource> showFile(HttpServletRequest request, @PathVariable String relTypeCode,
+			@PathVariable int relId, @PathVariable String typeCode, @PathVariable String type2Code,
+			@PathVariable int fileNo) throws FileNotFoundException {
+		GenFile genFile = genFileService.getGenFile(relTypeCode, relId, typeCode, type2Code, fileNo);
 
-        return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + genFile.getOriginFileName() + "\"")
-                .contentType(MediaType.parseMediaType(contentType)).body(resource);
-    }
+		if (genFile == null) {
+			throw new GenFileNotFoundException();
+		}
 
-    @GetMapping("/common/genFile/file/{relTypeCode}/{relId}/{typeCode}/{type2Code}/{fileNo}")
-    public ResponseEntity<Resource> showFile(HttpServletRequest request, @PathVariable String relTypeCode,
-                                             @PathVariable int relId, @PathVariable String typeCode, @PathVariable String type2Code,
-                                             @PathVariable int fileNo) throws FileNotFoundException {
-        GenFile genFile = genFileService.getGenFile(relTypeCode, relId, typeCode, type2Code, fileNo);
+		String filePath = genFile.getFilePath(genFileDirPath);
+		Resource resource = new InputStreamResource(new FileInputStream(filePath));
 
-        if (genFile == null) {
-            throw new GenFileNotFoundException();
-        }
+		// Try to determine file's content type
+		String contentType = request.getServletContext().getMimeType(new File(filePath).getAbsolutePath());
 
-        String filePath = genFile.getFilePath(genFileDirPath);
-        Resource resource = new InputStreamResource(new FileInputStream(filePath));
+		if (contentType == null) {
+			contentType = "application/octet-stream";
+		}
 
-        // Try to determine file's content type
-        String contentType = request.getServletContext().getMimeType(new File(filePath).getAbsolutePath());
-
-        if (contentType == null) {
-            contentType = "application/octet-stream";
-        }
-
-        return ResponseEntity.ok().contentType(MediaType.parseMediaType(contentType)).body(resource);
-    }
+		return ResponseEntity.ok().contentType(MediaType.parseMediaType(contentType)).body(resource);
+	}
 }

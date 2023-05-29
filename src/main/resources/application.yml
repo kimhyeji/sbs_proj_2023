@@ -3,8 +3,8 @@ server:
 spring:
   servlet:
     multipart:
-      max-file-size: 50MB
-      max-request-size: 50MB
+      max-file-size: 100MB
+      max-request-size: 100MB
   mail:
     host: smtp.mailtrap.io
     port: 2525

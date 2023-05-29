@@ -34,6 +34,7 @@
 
 <!-- 토스트 UI 에디터 플러그인, UML -->
 <script src="https://uicdn.toast.com/editor-plugin-uml/latest/toastui-editor-plugin-uml.min.js"></script>
+<link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css" />
 <script src="https://uicdn.toast.com/editor/latest/i18n/ko-kr.min.js"></script>
 
 
@@ -290,11 +291,22 @@ function ToastEditor__init() {
 
     const editor = new toastui.Editor({
       el: node,
+      height:'600px',
       language: 'ko-KR',
       initialEditType: 'wysiwyg',
       previewStyle: 'tab',
       initialValue: initialValue,
-      height:'600px',
+      hooks: {
+  	    addImageBlobHook: function (blob, callback) {
+  	      const formData = new FormData();
+  	      formData.append("image", blob);
+  	      formData.append("uri", window.location.pathname);
+  	      const imageURL = imageUpload(formData);
+  	      callback(imageURL, "image");
+  	    /* uploadImages(blob, callback); */
+  	    },
+      },
+      
       plugins: [
         [toastui.Editor.plugin.chart, ToastEditor__chartOptions],
         [toastui.Editor.plugin.codeSyntaxHighlight, {highlighter:Prism}],
@@ -313,6 +325,28 @@ function ToastEditor__init() {
 
     $node.data('data-toast-editor', editor);
   });
+}
+
+function imageUpload(formData) {	
+	let imageURL;
+	
+	$.ajax({
+	  type: "post",
+	  url: "../article/image_upload",
+	  async: false,
+	  data: formData,
+	  processData: false,
+	  contentType: false,
+	  success: function (data) {
+	    imageURL = data;
+	    console.log(imageURL);
+	  },
+	  error: function (request, status, error) {
+	    alert(request + ", " + status + ", " + error);
+	  },
+	});
+	
+	return imageURL;
 }
 
 function ToastEditorView__init() {
@@ -349,5 +383,7 @@ $(function() {
   ToastEditor__init();
   ToastEditorView__init();
 });
+
+
 /* 토스트 UI 관련 자바스크립트 끝 */
 </script> 

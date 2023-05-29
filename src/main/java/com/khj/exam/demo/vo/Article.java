@@ -1,5 +1,8 @@
 package com.khj.exam.demo.vo;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,6 +24,7 @@ public class Article {
 	private String extra__writerName;	
 	private boolean extra__actorCanDelete;
 	private boolean extra__actorCanModify;
+	public Map<String, Object> extra;
 	
 	public String getRegDateForPrint() {
 		return regDate.substring(2, 16);
@@ -40,5 +44,13 @@ public class Article {
 	
 	public String getForPrintBody() {
 		return body.replaceAll("\n", "<br>");
+	}
+	
+	public Map<String, Object> getExtraNotNull() {
+		if (extra == null) {
+			extra = new HashMap<String, Object>();
+		}
+
+		return extra;
 	}
 }
