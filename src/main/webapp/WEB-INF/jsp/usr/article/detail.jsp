@@ -5,7 +5,7 @@
 <%@include file="../common/head.jspf" %>
 <%@include file="../../common/toastUiEditorLib.jspf" %>
 
-<c:set var="fileInputMaxCount" value="1" />
+<c:set var="fileInputMaxCount" value="2" />
 <script>
 const params = {}
 params.id = parseInt('${param.id}');
@@ -133,7 +133,9 @@ $(function() {
               <c:forEach begin="1" end="${fileInputMaxCount}" var="inputNo">
 					<c:set var="fileNo" value="${String.valueOf(inputNo)}" />
 					<c:set var="file" value="${article.extra.file__common__attachment[fileNo]}" />
-					<a href="${file.downloadUrl}">${file.originFileName} 다운</a>
+            		<div class="text-gray-600 font-medium text-sm my-3 hover:text-blue-600">
+						<a href="${file.downloadUrl}">${file.originFileName} 다운</a>
+					</div>
 				</c:forEach>
             </td>
           </tr>

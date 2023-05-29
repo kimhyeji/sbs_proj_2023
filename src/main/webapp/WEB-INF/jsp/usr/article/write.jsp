@@ -4,7 +4,7 @@
 <%@include file="../common/head.jspf" %>
 <%@include file="../../common/toastUiEditorLib.jspf" %>
 
-<c:set var="fileInputMaxCount" value="1" />
+<c:set var="fileInputMaxCount" value="2" />
 <script>
 ArticleAdd__fileInputMaxCount = parseInt("${fileInputMaxCount}");
 </script>
@@ -131,16 +131,14 @@ ArticleAdd__fileInputMaxCount = parseInt("${fileInputMaxCount}");
             <td>${rq.loginedMember.nickname}</td>
           </tr>
           <tr>
-          
-          <tr>
-          	<c:forEach begin="1" end="${fileInputMaxCount}" var="inputNo">
+          <c:forEach begin="1" end="${fileInputMaxCount}" var="inputNo">
+          	<tr>
 	            <th>첨부파일 ${inputNo}</th>
 	            <td>
 	            	<input type="file" name="file__article__0__common__attachment__${inputNo}" class="cursor-pointer"/>
 	            </td>
-            </c:forEach>
-          </tr>
-          
+            </tr>
+          </c:forEach>
           <tr>
             <th>제목</th>
             <td>

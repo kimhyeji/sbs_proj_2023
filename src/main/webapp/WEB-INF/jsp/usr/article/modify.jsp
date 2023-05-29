@@ -4,6 +4,12 @@
 <%@include file="../common/head.jspf" %>
 <%@include file="../../common/toastUiEditorLib.jspf" %>
 
+<c:set var="fileInputMaxCount" value="2" />
+<script>
+ArticleModify__fileInputMaxCount = parseInt("${fileInputMaxCount}");
+const articleId = parseInt("${article.id}");
+</script>
+
 <script>
 	let ArticleModify__submitDone = false;
 	function ArticleModify__submit(form) {
@@ -23,15 +29,95 @@
 		
 		form.body.value = markdown;
 		
+		var maxSizeMb = 50;
+		var maxSize = maxSizeMb * 1024 * 1024;
+
+		for ( let inputNo = 1; inputNo <= ArticleModify__fileInputMaxCount; inputNo++ ) {
+			const input = form["file__article__" + articleId + "__common__attachment__" + inputNo];
+			
+			if (input.value) {
+				if (input.files[0].size > maxSize) {
+					alert(maxSizeMb + "MB 이하의 파일을 업로드 해주세요.");
+					input.focus();
+					
+					return;
+				}
+			}
+		}
+
+		const startSubmitForm = function(data) {
+			if (data && data.body && data.body.genFileIdsStr) {
+				form.genFileIdsStr.value = data.body.genFileIdsStr;
+			}
+			
+			for ( let inputNo = 1; inputNo <= ArticleModify__fileInputMaxCount; inputNo++ ) {
+				const input = form["file__article__" + articleId + "__common__attachment__" + inputNo];
+				input.value = '';
+			}
+
+			for ( let inputNo = 1; inputNo <= ArticleModify__fileInputMaxCount; inputNo++ ) {
+				const input = form["deleteFile__article__" + articleId + "__common__attachment__" + inputNo];
+
+				if ( input ) {
+					input.checked = false;
+				}
+			}
+			
+			form.submit();
+		};
+
+		const startUploadFiles = function(onSuccess) {
+			var needToUpload = false;
+
+			for ( let inputNo = 1; inputNo <= ArticleModify__fileInputMaxCount; inputNo++ ) {
+				const input = form["file__article__" + articleId + "__common__attachment__" + inputNo];
+
+				if ( input.value.length > 0 ) {
+					needToUpload = true;
+					break;
+				}
+			}
+
+			if ( needToUpload == false ) {
+				for ( let inputNo = 1; inputNo <= ArticleModify__fileInputMaxCount; inputNo++ ) {
+					const input = form["deleteFile__article__" + articleId + "__common__attachment__" + inputNo];
+
+					if ( input && input.checked ) {
+						needToUpload = true;
+						break;
+					}
+				}
+			}
+			
+			if (needToUpload == false) {
+				onSuccess();
+				return;
+			}
+			
+			var fileUploadFormData = new FormData(form);
+			
+			$.ajax({
+				url : '/common/genFile/doUpload',
+				data : fileUploadFormData,
+				processData : false,
+				contentType : false,
+				dataType : "json",
+				type : 'POST',
+				success : onSuccess
+			});
+		}
+		
 		ArticleModify__submitDone = true;
-		form.submit();		
+
+		startUploadFiles(startSubmitForm);		
 	}
 </script>
 
 <section class="mt-5">
   <div class="container mx-auto px-3">
-	<form class="table-box-type-1" method="POST" action="../article/doModify" onsubmit="ArticleModify__submit(this); return false;">
+	<form class="table-box-type-1" method="POST" enctype="multipart/form-data" action="../article/doModify" onsubmit="ArticleModify__submit(this); return false;">
 	  <input type="hidden" name="id" value="${article.id}"/>
+	  <input type="hidden" name="genFileIdsStr" value="" />
 	  <input type="hidden" name="body"/>
 	
       <table>
@@ -81,6 +167,44 @@
               </div>
             </td>
           </tr>
+          
+          <tr>
+            <th>내용</th>
+            <td>
+              <c:forEach begin="1" end="${fileInputMaxCount}" var="inputNo">
+				<c:set var="fileNo" value="${String.valueOf(inputNo)}" />
+                <c:set var="file" value="${article.extra.file__common__attachment[fileNo]}" />
+				<div class="form-row flex flex-col lg:flex-row">
+					<div class="lg:flex lg:items-center lg:w-28">
+						<span>첨부파일 ${inputNo}</span>
+					</div>
+					<div class="lg:flex-grow input-file-wrap">
+						<input type="file" name="file__article__${article.id}__common__attachment__${inputNo}"
+							class="form-row-input w-full rounded-sm" />
+						<c:if test="${file != null}">
+							<div>
+								<a href="${file.downloadUrl}" target="_blank" class="text-blue-500 hover:underline" href="#">${file.originFileName}</a> ( ${Util.numberFormat(file.fileSize)} Byte )
+							</div>
+							<div>
+								<label>
+									<input onclick="$(this).closest('.input-file-wrap').find(' > input[type=file]').val('')" type="checkbox" name="deleteFile__article__${article.id}__common__attachment__${fileNo}" value="Y" />
+									<span>삭제</span>
+                            	</label>
+							</div>
+							<c:if test="${file.fileExtTypeCode == 'img'}">
+	                            <div class="img-box img-box-auto">
+	                            	<a class="inline-block" href="${file.forPrintUrl}" target="_blank" title="자세히 보기">
+	                            		<img class="max-w-sm" src="${file.forPrintUrl}">
+	                            	</a>
+	                            </div>
+                            </c:if>
+						</c:if>
+					</div>
+				</div>
+			</c:forEach>
+            </td>
+          </tr>
+          
           <tr>
             <th>수정</th>
             <td>
