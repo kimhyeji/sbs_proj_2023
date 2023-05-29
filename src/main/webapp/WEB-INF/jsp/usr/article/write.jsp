@@ -96,6 +96,7 @@ ArticleAdd__fileInputMaxCount = parseInt("${fileInputMaxCount}");
 				contentType : false,
 				dataType : "json",
 				type : 'POST',
+				enctype: 'multipart/form-data',
 				success : onSuccess
 			});
 		}

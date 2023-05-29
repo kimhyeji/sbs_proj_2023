@@ -132,10 +132,17 @@ $(function() {
             <td>
               <c:forEach begin="1" end="${fileInputMaxCount}" var="inputNo">
 					<c:set var="fileNo" value="${String.valueOf(inputNo)}" />
-					<c:set var="file" value="${article.extra.file__common__attachment[fileNo]}" />
-            		<div class="text-gray-600 font-medium text-sm my-3 hover:text-blue-600">
-						<a href="${file.downloadUrl}">${file.originFileName} 다운</a>
-					</div>
+                	<c:set var="file" value="${article.extra.file__common__attachment[fileNo]}" />
+					<c:if test="${file!=null}">
+	            		<div class="text-gray-600 font-medium text-sm my-3 hover:text-blue-600">
+							<a href="${file.downloadUrl}">${file.originFileName} 다운</a>
+						</div>
+					</c:if>
+					<c:if test="${file==null}">
+						<div class="text-gray-600 font-medium text-sm">
+							첨부파일이 없습니다.
+						</div>
+					</c:if>
 				</c:forEach>
             </td>
           </tr>

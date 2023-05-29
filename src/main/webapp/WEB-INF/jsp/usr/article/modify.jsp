@@ -103,6 +103,7 @@ const articleId = parseInt("${article.id}");
 				contentType : false,
 				dataType : "json",
 				type : 'POST',
+				enctype: 'multipart/form-data',
 				success : onSuccess
 			});
 		}
