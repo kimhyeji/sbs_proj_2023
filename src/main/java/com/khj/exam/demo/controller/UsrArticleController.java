@@ -106,7 +106,7 @@ public class UsrArticleController {
 	// 액션 메서드 시작
 	@RequestMapping("/usr/article/doWrite")
 	@ResponseBody
-	public String doWrite(@RequestParam(defaultValue = "1") String genFileIdsStr, @RequestParam(defaultValue = "1") int boardId, String title, String body, String replaceUri) {
+	public String doWrite(@RequestParam(defaultValue = "") String genFileIdsStr, @RequestParam(defaultValue = "1") int boardId, String title, String body, String replaceUri) {
 		
 //		Integer boardId로 한 다음 아래 주석을 풀어주시면 됩니다.
 //		if (Ut.empty(boardId)) {

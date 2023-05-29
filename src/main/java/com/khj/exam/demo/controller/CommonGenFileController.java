@@ -23,6 +23,7 @@ import org.springframework.web.multipart.MultipartRequest;
 
 import com.khj.exam.demo.exception.GenFileNotFoundException;
 import com.khj.exam.demo.service.GenFileService;
+import com.khj.exam.demo.utill.Ut;
 import com.khj.exam.demo.vo.GenFile;
 import com.khj.exam.demo.vo.ResultData;
 
@@ -55,9 +56,12 @@ public class CommonGenFileController {
 		if (contentType == null) {
 			contentType = "application/octet-stream";
 		}
+		
+		System.out.println("originName : " +  genFile.getOriginFileName());
+		System.out.println("originName : " +  Ut.getUriEncoded(genFile.getOriginFileName()));
 
 		return ResponseEntity.ok()
-				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + genFile.getFileName() + "\"")
+				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + Ut.getUriEncoded(genFile.getOriginFileName()) + "\"")
 				.contentType(MediaType.parseMediaType(contentType)).body(resource);
 	}
 
