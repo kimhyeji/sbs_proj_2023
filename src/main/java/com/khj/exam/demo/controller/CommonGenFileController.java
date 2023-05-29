@@ -57,7 +57,7 @@ public class CommonGenFileController {
 		}
 
 		return ResponseEntity.ok()
-				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + genFile.getOriginFileName() + "\"")
+				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + genFile.getFileName() + "\"")
 				.contentType(MediaType.parseMediaType(contentType)).body(resource);
 	}
 
