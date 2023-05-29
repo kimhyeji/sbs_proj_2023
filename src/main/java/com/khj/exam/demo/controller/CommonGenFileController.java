@@ -56,9 +56,6 @@ public class CommonGenFileController {
 		if (contentType == null) {
 			contentType = "application/octet-stream";
 		}
-		
-		System.out.println("originName : " +  genFile.getOriginFileName());
-		System.out.println("originName : " +  Ut.getUriEncoded(genFile.getOriginFileName()));
 
 		return ResponseEntity.ok()
 				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + Ut.getUriEncoded(genFile.getOriginFileName()) + "\"")

@@ -94,7 +94,7 @@ ArticleAdd__fileInputMaxCount = parseInt("${fileInputMaxCount}");
 				data : fileUploadFormData,
 				processData : false,
 				contentType : false,
-				dataType : 'json',
+				dataType : "json",
 				type : 'POST',
 				success : onSuccess
 			});
